@@ -21,6 +21,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintPure)
+		bool IsDead() const;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -41,5 +45,12 @@ private:
 		TSubclassOf<AGun> GunClass;
 
 	void Shoot();
+
+	UPROPERTY(EditAnywhere)
+		float MaxHealth = 50;
+
+	float Health;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 };

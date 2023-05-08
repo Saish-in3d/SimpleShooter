@@ -21,6 +21,8 @@ void AShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(FName("weapon_r"), EPhysBodyOp::PBO_None);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	Health = MaxHealth;
 }
 
 void AShooterCharacter::MoveForward(float Value)
@@ -38,10 +40,26 @@ void AShooterCharacter::Shoot()
 	Gun->PullTrigger();
 }
 
+float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage( DamageAmount,   DamageEvent,  EventInstigator, DamageCauser);
+
+	if(Health>= 0.f+ DamageApplied)
+	{
+		Health = Health - DamageApplied;
+		UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
+		
+	}
+
+	return DamageApplied;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	IsDead();
+	
 
 }
 
@@ -56,5 +74,14 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
+}
+
+bool AShooterCharacter::IsDead() const
+{
+	if (Health <= 0.f)
+	{
+		return true;
+	}
+	else return false;
 }
 
