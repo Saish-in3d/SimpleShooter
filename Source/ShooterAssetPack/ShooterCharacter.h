@@ -24,6 +24,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		bool IsDead() const;
 
+	void Shoot();
 
 protected:
 	// Called when the game starts or when spawned
@@ -44,7 +45,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AGun> GunClass;
 
-	void Shoot();
+
 
 	UPROPERTY(EditAnywhere)
 		float MaxHealth = 50;
