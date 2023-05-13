@@ -2,7 +2,9 @@
 
 
 #include "ShooterCharacter.h"
+#include "Components/CapsuleComponent.h"
 #include "Gun.h"
+#include "KillEmAllGameModeBase.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -60,6 +62,17 @@ void AShooterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	IsDead();
 	
+	if (IsDead())
+	{
+
+		ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+		if (GameMode)
+		{
+			GameMode->PawnKilled(this);
+		}
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 
 }
 

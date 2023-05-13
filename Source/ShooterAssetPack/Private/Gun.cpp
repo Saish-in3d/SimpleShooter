@@ -52,7 +52,10 @@ void AGun::PullTrigger()
 			//DrawDebugCamera(GetWorld(), Location, Rotation, 90, 2, FColor::Red, true);
 			FVector End = Location + Rotation.Vector() * MaxRange;
 			FHitResult Hit;
-			bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
+			FCollisionQueryParams Param;
+			Param.AddIgnoredActor(this);
+			Param.AddIgnoredActor(GetOwner());
+			bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Param);
 			if (bSuccess && BulletImpact)
 			{
 				//DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
