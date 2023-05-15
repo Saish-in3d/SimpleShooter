@@ -17,7 +17,7 @@ public:
 	virtual void PawnKilled(APawn* PawnKilled) override;
 
 protected:
-	void EndGame();
+	void EndGame(bool bIsPlayerWinner);
 
 
 };

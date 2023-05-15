@@ -46,11 +46,22 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 {
 	float DamageApplied = Super::TakeDamage( DamageAmount,   DamageEvent,  EventInstigator, DamageCauser);
 
-	if(Health>= 0.f+ DamageApplied)
+	if(Health>= 0.f+ DamageApplied )
 	{
 		Health = Health - DamageApplied;
 		UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
 		
+		if (IsDead())
+		{
+
+			ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+			if (GameMode)
+			{
+				GameMode->PawnKilled(this);
+			}
+			DetachFromControllerPendingDestroy();
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
 	}
 
 	return DamageApplied;
@@ -60,19 +71,9 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	IsDead();
 	
-	if (IsDead())
-	{
-
-		ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
-		if (GameMode)
-		{
-			GameMode->PawnKilled(this);
-		}
-		DetachFromControllerPendingDestroy();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
+	
+	
 
 }
 

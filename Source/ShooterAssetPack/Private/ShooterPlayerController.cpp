@@ -8,12 +8,29 @@
 void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
-	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
-	UUserWidget* LoseWidget = CreateWidget(this, LoseWidgetClass);
-	if(LoseWidget)
+	
+
+	if (bIsWinner == false)
 	{
-		LoseWidget->AddToViewport();
+		UUserWidget* LoseWidget = CreateWidget(this, LoseWidgetClass);
+		if (LoseWidget)
+		{
+			
+			LoseWidget->AddToViewport();
+		}
 	}
+
+	else if (bIsWinner == true)
+	{
+		UUserWidget* WinWidget = CreateWidget(this, WinWidgetClass);
+		if (WinWidget)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("test"));
+			WinWidget->AddToViewport();
+			
+		}
+	}
+	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
 }
 
 
