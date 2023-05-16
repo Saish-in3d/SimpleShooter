@@ -26,6 +26,10 @@ public:
 
 	void Shoot();
 
+	UFUNCTION(BlueprintPure)
+		float GetHealthPercent() const;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

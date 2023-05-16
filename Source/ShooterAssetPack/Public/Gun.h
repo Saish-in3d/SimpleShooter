@@ -19,6 +19,8 @@ public:
 
 	void PullTrigger();
 
+	void GunTracing(APawn* OwnerPawn);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,6 +36,13 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		class	UParticleSystem* BulletImpact;
+
+	UPROPERTY(EditAnywhere)
+		USoundBase* MuzzleSound;
+
+	UPROPERTY(EditAnywhere)
+		USoundBase* ImpactSound;
+
 
 	UPROPERTY(EditAnywhere)
 		float MaxRange = 1000;

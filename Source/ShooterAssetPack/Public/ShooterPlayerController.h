@@ -18,6 +18,9 @@ public:
 
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 private:
 
@@ -30,4 +33,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UUserWidget> WinWidgetClass;
+
+	class UUserWidget* CrosshairWidget;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UUserWidget> CrosshairWidgetClass;
 };

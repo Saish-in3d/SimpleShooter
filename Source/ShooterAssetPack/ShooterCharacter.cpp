@@ -42,6 +42,12 @@ void AShooterCharacter::Shoot()
 	Gun->PullTrigger();
 }
 
+float AShooterCharacter::GetHealthPercent() const
+{
+	
+	return Health / MaxHealth;
+}
+
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageApplied = Super::TakeDamage( DamageAmount,   DamageEvent,  EventInstigator, DamageCauser);

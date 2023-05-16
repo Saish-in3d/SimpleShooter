@@ -15,7 +15,7 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 		UUserWidget* LoseWidget = CreateWidget(this, LoseWidgetClass);
 		if (LoseWidget)
 		{
-			
+			CrosshairWidget->RemoveFromViewport();
 			LoseWidget->AddToViewport();
 		}
 	}
@@ -25,12 +25,19 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 		UUserWidget* WinWidget = CreateWidget(this, WinWidgetClass);
 		if (WinWidget)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("test"));
+			CrosshairWidget->RemoveFromViewport();
 			WinWidget->AddToViewport();
 			
 		}
 	}
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
+}
+
+void AShooterPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	CrosshairWidget = CreateWidget(this, CrosshairWidgetClass);
+	CrosshairWidget->AddToViewport();
 }
 
 
