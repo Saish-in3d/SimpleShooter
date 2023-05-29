@@ -4,6 +4,7 @@
 #include "ShooterCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Gun.h"
+
 #include "KillEmAllGameModeBase.h"
 
 // Sets default values
@@ -11,6 +12,10 @@ AShooterCharacter::AShooterCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	BallProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>("Projectile Spawn");
+	BallProjectileSpawnPoint->SetupAttachment(RootComponent);
+
 
 }
 
@@ -46,6 +51,11 @@ float AShooterCharacter::GetHealthPercent() const
 {
 	
 	return Health / MaxHealth;
+}
+
+void AShooterCharacter::Ability()
+{
+
 }
 
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -93,7 +103,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot); 
+	PlayerInputComponent->BindAction(TEXT("Ability"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Ability);
 }
 
 bool AShooterCharacter::IsDead() const

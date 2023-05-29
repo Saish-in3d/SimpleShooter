@@ -22,17 +22,22 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintPure)
-		bool IsDead() const;
+	bool IsDead() const;
 
 	void Shoot();
 
 	UFUNCTION(BlueprintPure)
-		float GetHealthPercent() const;
+	float GetHealthPercent() const;
+
+	virtual void Ability();
 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, category = "Basic", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* BallProjectileSpawnPoint;
 
 private:	
 	void MoveForward(float Value);
@@ -44,15 +49,15 @@ private:
 
 
 	UPROPERTY()
-		class AGun* Gun;
+	class AGun* Gun;
 
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<AGun> GunClass;
+	TSubclassOf<AGun> GunClass;
 
 
 
 	UPROPERTY(EditAnywhere)
-		float MaxHealth = 50;
+	float MaxHealth = 50;
 
 	float Health;
 
