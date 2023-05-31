@@ -31,6 +31,10 @@ public:
 
 	virtual void Ability();
 
+	void ReduceGunAmmo();
+
+	bool IsReloading = false;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -63,4 +67,31 @@ private:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	UPROPERTY(EditAnywhere)
+	float MaxGunAmmo = 30.f;
+
+	float GunAmmo;
+
+	UPROPERTY(EditAnywhere)
+	float BodyAmmo = 60.f;
+
+	
+
+	void CheckAndReloadGunAmmo();
+
+	 
+
+	UFUNCTION()
+	void AddMaxAmmo();
+
+	FTimerHandle ReloadDelay;
+
+	UFUNCTION(BlueprintPure)
+	float GetBodyAmmo();
+
+	UFUNCTION(BlueprintPure)
+	float GetGunAmmo();
+
+	
+	
 };

@@ -21,6 +21,8 @@ public:
 
 	void GunTracing(APawn* OwnerPawn);
 
+	void PlayReloadSound();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,5 +52,11 @@ private:
 	UPROPERTY(EditAnywhere)
 		float Damage = 10;
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* ReloadSound;
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* TriggerSound;
+
+	
 };

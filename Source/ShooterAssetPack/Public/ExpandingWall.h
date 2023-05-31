@@ -26,9 +26,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* WallComponent;
 
-	//UPROPERTY(EditAnywhere)
-	//class UArrowComponent* ArrowComponent1;
 
-	TArray<UArrowComponent*> ArrowComponents;
+	class UHealthComponent* HealthComponent;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 };

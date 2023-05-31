@@ -30,6 +30,8 @@ void AShooterCharacter::BeginPlay()
 	Gun->SetOwner(this);
 
 	Health = MaxHealth;
+
+	GunAmmo = MaxGunAmmo;
 }
 
 void AShooterCharacter::MoveForward(float Value)
@@ -83,12 +85,50 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	return DamageApplied;
 }
 
+void AShooterCharacter::ReduceGunAmmo()
+{
+	GunAmmo -= 1.f;
+}
+
+void AShooterCharacter::CheckAndReloadGunAmmo()
+{
+	if (GunAmmo == 0.f && !IsReloading && Gun)
+	{
+		IsReloading = true;
+		Gun->PlayReloadSound();
+		// DELAY + FULL AMMO CALLBACK FUNCTION
+		FTimerDelegate ReloadDelegate;
+		ReloadDelegate.BindUFunction(this, FName("AddMaxAmmo"));
+		GetWorld()->GetTimerManager().SetTimer(ReloadDelay, ReloadDelegate, 2.f, false);
+	}
+}
+
+void AShooterCharacter::AddMaxAmmo()
+{
+	if(BodyAmmo >= 30.f)
+	{
+		GunAmmo = MaxGunAmmo;
+		BodyAmmo -= MaxGunAmmo;
+		IsReloading = false;
+	}
+}
+
+float AShooterCharacter::GetBodyAmmo()
+{
+	return BodyAmmo;
+}
+
+float AShooterCharacter::GetGunAmmo()
+{
+	return GunAmmo;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	
+	CheckAndReloadGunAmmo();
 	
 
 }

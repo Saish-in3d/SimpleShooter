@@ -4,7 +4,7 @@
 #include "Components/SceneComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
-
+#include "ShooterAssetPack/ShooterCharacter.h"
 #include "Gun.h"
 
 // Sets default values
@@ -38,18 +38,32 @@ void AGun::Tick(float DeltaTime)
 
 void AGun::PullTrigger()
 {
-	
-	if(MuzzleFlash && MuzzleSound)
+	if (TriggerSound)
 	{
-		
-		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GunMesh, TEXT("MuzzleFlashSocket"));
-		UGameplayStatics::SpawnSoundAttached(MuzzleSound, GunMesh, TEXT("MuzzleFlashSocket"));
+		UGameplayStatics::SpawnSoundAttached(TriggerSound, GunMesh, TEXT("MuzzleFlashSocket"));
 	}
+	
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn)
 	{
-		GunTracing(OwnerPawn);
+		
+		AShooterCharacter* ShooterChar = Cast<AShooterCharacter>(GetOwner());
+		if(ShooterChar && !ShooterChar->IsReloading)
+		{
+
+			GunTracing(OwnerPawn);
+			if (MuzzleFlash && MuzzleSound)
+			{
+
+				UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GunMesh, TEXT("MuzzleFlashSocket"));
+				UGameplayStatics::SpawnSoundAttached(MuzzleSound, GunMesh, TEXT("MuzzleFlashSocket"));
+			}
+			ShooterChar->ReduceGunAmmo();
+		}
+
 	}
+
+	
 }
 
 void AGun::GunTracing(APawn* OwnerPawn)
@@ -82,6 +96,14 @@ void AGun::GunTracing(APawn* OwnerPawn)
 
 		}
 
+	}
+}
+
+void AGun::PlayReloadSound()
+{
+	if(ReloadSound)
+	{
+		UGameplayStatics::SpawnSoundAttached(ReloadSound, GunMesh, TEXT("MuzzleFlashSocket"));
 	}
 }
 
