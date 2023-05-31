@@ -48,7 +48,7 @@ void AGun::PullTrigger()
 	{
 		
 		AShooterCharacter* ShooterChar = Cast<AShooterCharacter>(GetOwner());
-		if(ShooterChar && !ShooterChar->IsReloading)
+		if(ShooterChar && !ShooterChar->IsReloading && ShooterChar->IsGunAmmoPresent) 
 		{
 
 			GunTracing(OwnerPawn);

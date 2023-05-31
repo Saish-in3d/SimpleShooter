@@ -35,6 +35,13 @@ public:
 
 	bool IsReloading = false;
 
+	void AddHealth();
+
+	void AddAmmo();
+
+	bool IsBodyAmmoPresent = true;
+
+	bool IsGunAmmoPresent = true;
 
 protected:
 	// Called when the game starts or when spawned
@@ -57,6 +64,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun> GunClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf< class ASupportPack> SupportPackClass;
 
 
 
@@ -92,6 +102,10 @@ private:
 	UFUNCTION(BlueprintPure)
 	float GetGunAmmo();
 
-	
+	void CheckBodyAmmoLevel();
+
+	void CheckGunAmmoLevel();
+
+	void Die();
 	
 };

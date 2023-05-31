@@ -4,7 +4,7 @@
 #include "ShooterCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Gun.h"
-
+#include "SupportPack.h"
 #include "KillEmAllGameModeBase.h"
 
 // Sets default values
@@ -67,16 +67,17 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	if(Health>= 0.f+ DamageApplied )
 	{
 		Health = Health - DamageApplied;
-		UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
+		//UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
 		
 		if (IsDead())
 		{
-
+			
 			ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
 			if (GameMode)
 			{
 				GameMode->PawnKilled(this);
 			}
+			//Die(); //Spawn SupportPack
 			DetachFromControllerPendingDestroy();
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
@@ -87,12 +88,37 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 
 void AShooterCharacter::ReduceGunAmmo()
 {
-	GunAmmo -= 1.f;
+	if(GunAmmo == 0.f)
+	{
+		return;
+	}
+	else
+	{
+		GunAmmo -= 1.f;
+	}
+}
+
+void AShooterCharacter::AddHealth()
+{
+	if (Health <= 200.f)
+	{
+		float AddingHealth = 10.F * FMath::RandRange(1, 10);
+		Health += AddingHealth;
+		//add text to show health added
+	}
+}
+
+void AShooterCharacter::AddAmmo()
+{
+	float AddingAmmo = 30.F * FMath::RandRange(1, 5);
+	BodyAmmo += AddingAmmo;
+	//ADD WIDGET TEXT
 }
 
 void AShooterCharacter::CheckAndReloadGunAmmo()
 {
-	if (GunAmmo == 0.f && !IsReloading && Gun)
+	
+	if (GunAmmo == 0.f&& IsBodyAmmoPresent && !IsReloading && Gun) 
 	{
 		IsReloading = true;
 		Gun->PlayReloadSound();
@@ -105,7 +131,7 @@ void AShooterCharacter::CheckAndReloadGunAmmo()
 
 void AShooterCharacter::AddMaxAmmo()
 {
-	if(BodyAmmo >= 30.f)
+	if(BodyAmmo >= 30)
 	{
 		GunAmmo = MaxGunAmmo;
 		BodyAmmo -= MaxGunAmmo;
@@ -123,13 +149,50 @@ float AShooterCharacter::GetGunAmmo()
 	return GunAmmo;
 }
 
+void AShooterCharacter::CheckBodyAmmoLevel()
+{
+	if (BodyAmmo <= 0.f)
+	{
+		IsBodyAmmoPresent = false;
+	}
+	else
+	{
+		IsBodyAmmoPresent = true;
+	}
+}
+
+void AShooterCharacter::CheckGunAmmoLevel()
+{
+	if (GunAmmo <= 0.f)
+	{
+		IsGunAmmoPresent = false;
+	}
+	else
+	{
+		IsGunAmmoPresent = true;
+	}
+	
+}
+
+void AShooterCharacter::Die()
+{
+	if(SupportPackClass)
+	{
+		FVector SpawnLocation = GetActorLocation();
+		FRotator SpawnRotation = GetActorRotation();
+		FActorSpawnParameters SpawnParams;
+		AActor* SpawnedActor = GetWorld()->SpawnActor<ASupportPack>(SupportPackClass, SpawnLocation, SpawnRotation);
+	}
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
 	CheckAndReloadGunAmmo();
-	
+	CheckBodyAmmoLevel();
+	CheckGunAmmoLevel();
 
 }
 
