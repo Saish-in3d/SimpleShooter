@@ -4,6 +4,7 @@
 #include "ShooterCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Gun.h"
+#include"Components/PrimitiveComponent.h"
 #include "SupportPack.h"
 #include "KillEmAllGameModeBase.h"
 
@@ -19,15 +20,34 @@ AShooterCharacter::AShooterCharacter()
 
 }
 
+void AShooterCharacter::PickUp(AGun* OverlappingGuntemp)
+{
+	if(OverlappingGuntemp)
+	{
+		FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+		OverlappingGuntemp->AttachToComponent(GetMesh(), TransformRules, FName("WeaponSocket"));
+		OverlappingGuntemp->SetOwner(this);
+		OverlappingGuntemp->SetSphereCollision(false);
+	}
+}
+
+void AShooterCharacter::SetOverlappingActor(AActor* OverlappingActorTemp)
+{
+	OverlappingActor = OverlappingActorTemp;
+}
+
 // Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	
 	GetMesh()->HideBoneByName(FName("weapon_r"), EPhysBodyOp::PBO_None);
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
-	Gun->SetOwner(this);
+	//Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	//Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
+	//Gun->SetOwner(this);
+
+	
 
 	Health = MaxHealth;
 
@@ -46,7 +66,10 @@ void AShooterCharacter::MoveRight(float Value)
 
 void AShooterCharacter::Shoot()
 {
-	Gun->PullTrigger();
+	if(Gun)
+	{
+		Gun->PullTrigger();
+	}
 }
 
 float AShooterCharacter::GetHealthPercent() const
@@ -185,6 +208,27 @@ void AShooterCharacter::Die()
 	}
 }
 
+
+
+void AShooterCharacter::EquipGun()
+{
+	OverlappingGun = Cast<AGun>(OverlappingActor);
+	if(OverlappingGun)
+	{
+		
+
+		PickUp(OverlappingGun);
+	}
+}
+
+
+	
+	
+	//UE_LOG(LogTemp, Warning, TEXT("Hello, World!"));
+
+
+
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -209,6 +253,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot); 
 	PlayerInputComponent->BindAction(TEXT("Ability"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Ability);
+	PlayerInputComponent->BindAction(TEXT("PickGun"), EInputEvent::IE_Pressed, this, &AShooterCharacter::EquipGun);
 }
 
 bool AShooterCharacter::IsDead() const

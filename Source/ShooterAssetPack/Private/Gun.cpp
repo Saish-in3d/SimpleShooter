@@ -5,6 +5,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/SphereComponent.h"
 #include "Gun.h"
 
 // Sets default values
@@ -19,21 +21,43 @@ AGun::AGun()
 	GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GunMesh"));
 	GunMesh->SetupAttachment(RootComponent);
 
+	Sphere = CreateDefaultSubobject<USphereComponent>(FName("Sphere"));
+	Sphere->SetupAttachment(GetRootComponent());
 
+}
+
+void AGun::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AGun::OnOverlapBegin);
+	Sphere->OnComponentEndOverlap.AddDynamic(this, &AGun::OnOverlapEnd);
 	
 }
 
-// Called every frame
-void AGun::Tick(float DeltaTime)
+void AGun::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::Tick(DeltaTime);
+	AShooterCharacter* OverlappedShooterChar = Cast<AShooterCharacter>(OtherActor);
+	if (OverlappedShooterChar)
+	{
+		OverlappedShooterChar->SetOverlappingActor(this);
+		UE_LOG(LogTemp, Warning, TEXT("In"));
+	}
+}
 
+void AGun::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	AShooterCharacter* OverlappedShooterChar = Cast<AShooterCharacter>(OtherActor);
+	if (OverlappedShooterChar)
+	{
+		OverlappedShooterChar->SetOverlappingActor(nullptr);
+		UE_LOG(LogTemp, Warning, TEXT("out"));
+	}
 }
 
 void AGun::PullTrigger()
@@ -104,6 +128,18 @@ void AGun::PlayReloadSound()
 	if(ReloadSound)
 	{
 		UGameplayStatics::SpawnSoundAttached(ReloadSound, GunMesh, TEXT("MuzzleFlashSocket"));
+	}
+}
+
+void AGun::SetSphereCollision(bool value)
+{
+	if (value == true)
+	{
+		Sphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	}
+	else if (value == false)
+	{
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 

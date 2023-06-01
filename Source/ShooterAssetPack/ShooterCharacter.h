@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
+
+
 UCLASS()
 class SHOOTERASSETPACK_API AShooterCharacter : public ACharacter
 {
@@ -43,6 +45,10 @@ public:
 
 	bool IsGunAmmoPresent = true;
 
+	void PickUp(class AGun* OverlappingGun);
+
+	void SetOverlappingActor(AActor* OverlappingActorTemp);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -60,10 +66,10 @@ private:
 
 
 	UPROPERTY()
-	class AGun* Gun;
+		class AGun* Gun;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AGun> GunClass;
+	TSubclassOf<class AGun> GunClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf< class ASupportPack> SupportPackClass;
@@ -108,4 +114,15 @@ private:
 
 	void Die();
 	
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
+	UPROPERTY(VisibleAnywhere)
+	class AGun* OverlappingGun;
+
+	void EquipGun();
+
+	
+
+	AActor* OverlappingActor;
 };
