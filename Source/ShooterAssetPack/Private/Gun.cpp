@@ -46,7 +46,7 @@ void AGun::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 	if (OverlappedShooterChar)
 	{
 		OverlappedShooterChar->SetOverlappingActor(this);
-		UE_LOG(LogTemp, Warning, TEXT("In"));
+		
 	}
 }
 
@@ -56,12 +56,13 @@ void AGun::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	if (OverlappedShooterChar)
 	{
 		OverlappedShooterChar->SetOverlappingActor(nullptr);
-		UE_LOG(LogTemp, Warning, TEXT("out"));
+		
 	}
 }
 
 void AGun::PullTrigger()
 {
+	
 	if (TriggerSound)
 	{
 		UGameplayStatics::SpawnSoundAttached(TriggerSound, GunMesh, TEXT("MuzzleFlashSocket"));

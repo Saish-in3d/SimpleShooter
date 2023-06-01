@@ -43,11 +43,6 @@ void AShooterCharacter::BeginPlay()
 	
 	
 	GetMesh()->HideBoneByName(FName("weapon_r"), EPhysBodyOp::PBO_None);
-	//Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-	//Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
-	//Gun->SetOwner(this);
-
-	
 
 	Health = MaxHealth;
 
@@ -66,9 +61,10 @@ void AShooterCharacter::MoveRight(float Value)
 
 void AShooterCharacter::Shoot()
 {
-	if(Gun)
+	if(OverlappingGun)
 	{
-		Gun->PullTrigger();
+		
+		OverlappingGun->PullTrigger();
 	}
 }
 
