@@ -77,7 +77,7 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 			{
 				GameMode->PawnKilled(this);
 			}
-			//Die(); //Spawn SupportPack
+			Die(); //Spawn SupportPack
 			DetachFromControllerPendingDestroy();
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
@@ -100,9 +100,9 @@ void AShooterCharacter::ReduceGunAmmo()
 
 void AShooterCharacter::AddHealth()
 {
-	if (Health <= 200.f)
+	if (Health <= 170.f)
 	{
-		float AddingHealth = 10.F * FMath::RandRange(1, 10);
+		float AddingHealth = 10.F * FMath::RandRange(1, 3);
 		Health += AddingHealth;
 		//add text to show health added
 	}
@@ -193,6 +193,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CheckAndReloadGunAmmo();
 	CheckBodyAmmoLevel();
 	CheckGunAmmoLevel();
+	
 
 }
 
@@ -212,8 +213,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 bool AShooterCharacter::IsDead() const
 {
-	if (Health <= 0.f)
+	if (Health <= 5.f)
 	{
+		
 		return true;
 	}
 	else return false;
