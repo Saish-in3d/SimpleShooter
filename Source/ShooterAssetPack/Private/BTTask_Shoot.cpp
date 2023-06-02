@@ -23,7 +23,7 @@ EBTNodeResult::Type UBTTask_Shoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 
 	if (ShooterCharacter)
 	{
-		ShooterCharacter->Shoot();
+		ShooterCharacter->AIShoot();
 	}
 	
 	return EBTNodeResult::Succeeded;

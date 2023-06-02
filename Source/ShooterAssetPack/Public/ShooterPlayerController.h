@@ -18,6 +18,9 @@ public:
 
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 
+	UFUNCTION(BlueprintNativeEvent)
+		void ClearHUD();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,4 +41,13 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UUserWidget> CrosshairWidgetClass;
+
+	virtual void ClearHUD_Implementation();
+
+	UFUNCTION()
+	void OpenMainMenu();
+
+
+
+
 };

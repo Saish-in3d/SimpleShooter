@@ -2,6 +2,7 @@
 
 #include "KillEmAllGameModeBase.h"
 #include "ShooterPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 
 
@@ -13,9 +14,10 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 	if (bIsWinner == false)
 	{
 		UUserWidget* LoseWidget = CreateWidget(this, LoseWidgetClass);
-		if (LoseWidget)
+		if (LoseWidget )
 		{
-			CrosshairWidget->RemoveFromViewport();
+			//CrosshairWidget->RemoveFromViewport();
+			ClearHUD_Implementation();
 			LoseWidget->AddToViewport();
 		}
 	}
@@ -23,21 +25,40 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 	else if (bIsWinner == true)
 	{
 		UUserWidget* WinWidget = CreateWidget(this, WinWidgetClass);
-		if (WinWidget)
+		if (WinWidget )
 		{
-			CrosshairWidget->RemoveFromViewport();
+			//CrosshairWidget->RemoveFromViewport();
+			ClearHUD_Implementation();
 			WinWidget->AddToViewport();
 			
 		}
 	}
-	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
+	GetWorldTimerManager().SetTimer(RestartTimer, this, &AShooterPlayerController::OpenMainMenu, RestartDelay);
 }
+
+
 
 void AShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	CrosshairWidget = CreateWidget(this, CrosshairWidgetClass);
-	CrosshairWidget->AddToViewport();
+
+
 }
+
+void AShooterPlayerController::ClearHUD_Implementation()
+{
+	
+}
+
+void AShooterPlayerController::OpenMainMenu()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), "MainMenuLevel");
+}
+
+
+
+
+
+
 
 

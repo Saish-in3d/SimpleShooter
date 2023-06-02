@@ -28,6 +28,8 @@ public:
 
 	void Shoot();
 
+	void AIShoot();
+
 	UFUNCTION(BlueprintPure)
 	float GetHealthPercent() const;
 
@@ -64,9 +66,8 @@ private:
 
 
 
-
-	UPROPERTY()
-		class AGun* Gun;
+	
+	class AGun* Gun;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AGun> GunClass;

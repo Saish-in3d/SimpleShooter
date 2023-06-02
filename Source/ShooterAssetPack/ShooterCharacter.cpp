@@ -6,6 +6,7 @@
 #include "Gun.h"
 #include"Components/PrimitiveComponent.h"
 #include "SupportPack.h"
+#include "ShooterAIController.h"
 #include "KillEmAllGameModeBase.h"
 
 // Sets default values
@@ -47,6 +48,17 @@ void AShooterCharacter::BeginPlay()
 	Health = MaxHealth;
 
 	GunAmmo = MaxGunAmmo;
+
+	AShooterAIController* AIShooterController = Cast<AShooterAIController>(GetController());
+	if (AIShooterController)
+	{
+		Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+		if(Gun)
+		{
+			Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
+			Gun->SetOwner(this);
+		}
+	}
 }
 
 void AShooterCharacter::MoveForward(float Value)
@@ -65,6 +77,17 @@ void AShooterCharacter::Shoot()
 	{
 		
 		OverlappingGun->PullTrigger();
+
+	}
+}
+
+void AShooterCharacter::AIShoot()
+{
+	if (Gun)
+	{
+
+		Gun->PullTrigger();
+
 	}
 }
 
@@ -137,10 +160,10 @@ void AShooterCharacter::AddAmmo()
 void AShooterCharacter::CheckAndReloadGunAmmo()
 {
 	
-	if (GunAmmo == 0.f&& IsBodyAmmoPresent && !IsReloading && Gun) 
+	if (GunAmmo == 0.f&& IsBodyAmmoPresent && !IsReloading && OverlappingGun)
 	{
 		IsReloading = true;
-		Gun->PlayReloadSound();
+		OverlappingGun->PlayReloadSound();
 		// DELAY + FULL AMMO CALLBACK FUNCTION
 		FTimerDelegate ReloadDelegate;
 		ReloadDelegate.BindUFunction(this, FName("AddMaxAmmo"));
@@ -217,15 +240,6 @@ void AShooterCharacter::EquipGun()
 	}
 }
 
-
-	
-	
-	//UE_LOG(LogTemp, Warning, TEXT("Hello, World!"));
-
-
-
-
-// Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -233,8 +247,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CheckAndReloadGunAmmo();
 	CheckBodyAmmoLevel();
 	CheckGunAmmoLevel();
-	
-
+	//UE_LOG(LogTemp, Warning, TEXT("Hello, World!"));
 }
 
 // Called to bind functionality to input
