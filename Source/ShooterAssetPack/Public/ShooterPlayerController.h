@@ -21,6 +21,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void ClearHUD();
 
+	UFUNCTION()
+	UUserWidget* SetPauseWidget();
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -47,7 +52,10 @@ private:
 	UFUNCTION()
 	void OpenMainMenu();
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> PauseWidgetClass;
 
+	UUserWidget* PauseWidget;
 
 
 };

@@ -6,7 +6,10 @@
 #include "Gun.h"
 #include"Components/PrimitiveComponent.h"
 #include "SupportPack.h"
+#include "ShooterPlayerController.h"
 #include "ShooterAIController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 #include "KillEmAllGameModeBase.h"
 
 // Sets default values
@@ -44,6 +47,7 @@ void AShooterCharacter::BeginPlay()
 	
 	
 	GetMesh()->HideBoneByName(FName("weapon_r"), EPhysBodyOp::PBO_None);
+	
 
 	Health = MaxHealth;
 
@@ -69,6 +73,26 @@ void AShooterCharacter::MoveForward(float Value)
 void AShooterCharacter::MoveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector() * Value);
+}
+
+void AShooterCharacter::PauseGame()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (PlayerController)
+	{
+		FInputModeUIOnly InputMode;
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputMode.SetWidgetToFocus(nullptr);
+		PlayerController->SetInputMode(InputMode);
+		ShooterPlayerController = Cast<AShooterPlayerController>(PlayerController);
+		if (ShooterPlayerController)
+		{
+			PauseWidget = ShooterPlayerController->SetPauseWidget();
+		}
+	}
+	
 }
 
 void AShooterCharacter::Shoot()
@@ -263,6 +287,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot); 
 	PlayerInputComponent->BindAction(TEXT("Ability"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Ability);
 	PlayerInputComponent->BindAction(TEXT("PickGun"), EInputEvent::IE_Pressed, this, &AShooterCharacter::EquipGun);
+	PlayerInputComponent->BindAction(TEXT("Pause"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PauseGame);
 }
 
 bool AShooterCharacter::IsDead() const

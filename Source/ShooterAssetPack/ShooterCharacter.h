@@ -63,6 +63,8 @@ private:
 	
 	void MoveRight(float Value);
 
+	
+
 
 
 
@@ -123,4 +125,10 @@ private:
 	
 
 	AActor* OverlappingActor;
+
+	void PauseGame();
+
+	class AShooterPlayerController* ShooterPlayerController;
+
+	UUserWidget* PauseWidget;
 };

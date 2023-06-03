@@ -36,6 +36,19 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &AShooterPlayerController::OpenMainMenu, RestartDelay);
 }
 
+UUserWidget* AShooterPlayerController::SetPauseWidget()
+{
+	if(PauseWidgetClass)
+	{
+		PauseWidget = CreateWidget(this, PauseWidgetClass);
+		PauseWidget->AddToViewport();
+		bShowMouseCursor = true;
+
+		return PauseWidget;
+	}
+	return  nullptr;
+}
+
 
 
 void AShooterPlayerController::BeginPlay()
