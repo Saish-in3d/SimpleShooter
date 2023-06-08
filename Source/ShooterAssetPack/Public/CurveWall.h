@@ -28,7 +28,7 @@ private:
 	UStaticMeshComponent* ProjectileMesh;
 
 	UPROPERTY(EditAnywhere)
-	float CurveAmount = -90.0f; // Amount of curve applied to the right
+	float CurveAmount; // Amount of curve applied 
 
 	void InitCB();
 
@@ -45,4 +45,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UClass* ExpWallClass;
+
+	class AShooterCharacter* ShooterChar;
+
+
 };

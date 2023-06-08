@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
-#include "IronShooterCharacter.generated.h"
+#include "IronShooterCharacter.generated.h" 
 
 /**
  * 
@@ -19,12 +19,12 @@ public:
 
 	virtual void Ability() override;
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere)
-	class UClass* BallClass;
+
 
 };

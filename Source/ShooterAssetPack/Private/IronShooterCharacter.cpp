@@ -11,13 +11,8 @@ AIronShooterCharacter::AIronShooterCharacter()
 void AIronShooterCharacter::Ability()
 {
 	Super::Ability();
-	FVector ProjectileSpawnPointLocation = BallProjectileSpawnPoint->GetComponentLocation();
 
-	FVector Location = BallProjectileSpawnPoint->GetComponentLocation();
-	FRotator Rotation = BallProjectileSpawnPoint->GetComponentRotation();
-
-	auto Projectile = GetWorld()->SpawnActor<ACurveWall>(BallClass, Location, Rotation);
-	Projectile->SetOwner(this);
+	
 }
 
 void AIronShooterCharacter::BeginPlay()
@@ -25,3 +20,5 @@ void AIronShooterCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+

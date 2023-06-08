@@ -3,6 +3,7 @@
 #include "KillEmAllGameModeBase.h"
 #include "ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShooterAssetPack/ShooterCharacter.h"
 #include "Blueprint/UserWidget.h"
 
 
@@ -30,7 +31,11 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 			//CrosshairWidget->RemoveFromViewport();
 			ClearHUD_Implementation();
 			WinWidget->AddToViewport();
-			
+			AShooterCharacter* ShooterChar = Cast<AShooterCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+			if(ShooterChar)
+			{
+				ShooterChar->Test();
+			}
 		}
 	}
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &AShooterPlayerController::OpenMainMenu, RestartDelay);

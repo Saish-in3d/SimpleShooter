@@ -10,6 +10,8 @@
 #include "ShooterAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "TimeSaveGame.h"
+#include "CurveWall.h"
 #include "KillEmAllGameModeBase.h"
 
 // Sets default values
@@ -40,6 +42,17 @@ void AShooterCharacter::SetOverlappingActor(AActor* OverlappingActorTemp)
 	OverlappingActor = OverlappingActorTemp;
 }
 
+float AShooterCharacter::SetTime()
+{
+	float TimeSinceSpawn = GetWorld()->GetTimeSeconds();
+	return TimeSinceSpawn;
+}
+
+FString AShooterCharacter::SetName()
+{
+	return FString();
+}
+
 // Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
@@ -63,6 +76,16 @@ void AShooterCharacter::BeginPlay()
 			Gun->SetOwner(this);
 		}
 	}
+
+	if (TimeSaveGameObject == nullptr)
+	{
+		TimeSaveGameObject = Cast<UTimeSaveGame>(UGameplayStatics::CreateSaveGameObject(WowGameClass));
+		//UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("MySaveSlot", 0));
+		UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("PlayerName"), 0);
+		
+	}
+	Test();
+	//PlayerName = GetName();
 }
 
 void AShooterCharacter::MoveForward(float Value)
@@ -95,6 +118,44 @@ void AShooterCharacter::PauseGame()
 	
 }
 
+void AShooterCharacter::SetCurveAmount()
+{
+	
+	if (CurveAmount == -90.f)
+	{
+		CurveAmount = 90.f;
+		return;
+	}
+	CurveAmount -= 90.f;
+	
+}
+
+void AShooterCharacter::Test()
+{
+	
+	
+	bool DoesSlotExists = UGameplayStatics::DoesSaveGameExist(FString("NameTimeSlot"), 0);
+	if(DoesSlotExists && TimeSaveGameObject)
+	{
+		TimeSaveGameObject->Timegg = SetTime();
+
+		PlayerName = TimeSaveGameObject->PlayerName;
+
+		UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("TimeSaveSlot"), 0);
+		UE_LOG(LogTemp, Warning, TEXT("Testing Test"));
+	}
+	
+	
+}
+
+float AShooterCharacter::GetCurveAmount()
+{
+	
+	return CurveAmount;
+}
+
+
+
 void AShooterCharacter::Shoot()
 {
 	if(OverlappingGun)
@@ -123,8 +184,16 @@ float AShooterCharacter::GetHealthPercent() const
 
 void AShooterCharacter::Ability()
 {
+	FVector ProjectileSpawnPointLocation = BallProjectileSpawnPoint->GetComponentLocation();
 
+	FVector Location = BallProjectileSpawnPoint->GetComponentLocation();
+	FRotator Rotation = BallProjectileSpawnPoint->GetComponentRotation();
+
+	auto Projectile = GetWorld()->SpawnActor<ACurveWall>(BallClass, Location, Rotation);
+	Projectile->SetOwner(this);
 }
+
+
 
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -215,6 +284,23 @@ float AShooterCharacter::GetGunAmmo()
 	return GunAmmo;
 }
 
+FText AShooterCharacter::GetDirection()
+{
+	if(CurveAmount == 90.f)
+	{
+		return FText::FromString(TEXT("Right"));
+	}
+	else if (CurveAmount == 0.f)
+	{
+		return FText::FromString(TEXT("Front"));
+	}
+	else if (CurveAmount == -90.f)
+	{
+		return FText::FromString(TEXT("Left"));
+	}
+	return FText::FromString(TEXT("Null"));
+}
+
 void AShooterCharacter::CheckBodyAmmoLevel()
 {
 	if (BodyAmmo <= 0.f)
@@ -249,6 +335,7 @@ void AShooterCharacter::Die()
 		FActorSpawnParameters SpawnParams;
 		AActor* SpawnedActor = GetWorld()->SpawnActor<ASupportPack>(SupportPackClass, SpawnLocation, SpawnRotation);
 	}
+	
 }
 
 
@@ -271,7 +358,9 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CheckAndReloadGunAmmo();
 	CheckBodyAmmoLevel();
 	CheckGunAmmoLevel();
+	SetTime();
 	//UE_LOG(LogTemp, Warning, TEXT("Hello, World!"));
+	UE_LOG(LogTemp, Warning, TEXT("%s"), &PlayerName);
 }
 
 // Called to bind functionality to input
@@ -288,6 +377,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Ability"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Ability);
 	PlayerInputComponent->BindAction(TEXT("PickGun"), EInputEvent::IE_Pressed, this, &AShooterCharacter::EquipGun);
 	PlayerInputComponent->BindAction(TEXT("Pause"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PauseGame);
+	PlayerInputComponent->BindAction(TEXT("CurveChange"), EInputEvent::IE_Pressed, this, &AShooterCharacter::SetCurveAmount);
 }
 
 bool AShooterCharacter::IsDead() const

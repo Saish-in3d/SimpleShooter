@@ -51,6 +51,18 @@ public:
 
 	void SetOverlappingActor(AActor* OverlappingActorTemp);
 
+	UFUNCTION(BlueprintPure)
+	float SetTime();
+
+	UFUNCTION(BlueprintPure)
+	FString SetName();
+
+	void Test();
+
+	float GetCurveAmount();
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -111,6 +123,9 @@ private:
 	UFUNCTION(BlueprintPure)
 	float GetGunAmmo();
 
+	UFUNCTION(BlueprintPure)
+	FText GetDirection();
+
 	void CheckBodyAmmoLevel();
 
 	void CheckGunAmmoLevel();
@@ -131,4 +146,26 @@ private:
 	class AShooterPlayerController* ShooterPlayerController;
 
 	UUserWidget* PauseWidget;
+
+	UPROPERTY(EditAnywhere)
+	FString PlayerName;
+
+	UPROPERTY(EditAnywhere)
+	float TimeRecord;
+
+	class UTimeSaveGame* TimeSaveGameObject;
+
+	
+
+	FString SaveSlotName;
+
+	TSubclassOf<UTimeSaveGame> WowGameClass;
+
+	UPROPERTY(EditAnywhere)
+		class UClass* BallClass;
+
+	float CurveAmount = 90.f; 
+
+	void SetCurveAmount();
+
 };
