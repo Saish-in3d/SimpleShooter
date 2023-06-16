@@ -17,12 +17,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//Enables trigger sound effect and tracing for shooting after satisfying other conditions
 	void PullTrigger();
 
 	void GunTracing(APawn* OwnerPawn);
 
 	void PlayReloadSound();
 
+	//Enables or disables gun pickup sphere collision whenever needed.
 	void SetSphereCollision(bool value);
 
 

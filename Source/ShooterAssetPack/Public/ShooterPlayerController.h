@@ -16,10 +16,11 @@ class SHOOTERASSETPACK_API AShooterPlayerController : public APlayerController
 	
 public:
 
+	// can be used to focus at actor of intrest and runs logic for winner widget.
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 
 	UFUNCTION(BlueprintNativeEvent)
-		void ClearHUD();
+		void ClearHUD(); 
 
 	UFUNCTION()
 	UUserWidget* SetPauseWidget();
@@ -37,18 +38,20 @@ private:
 	float RestartDelay = 5.f;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UUserWidget> LoseWidgetClass;
+	TSubclassOf<class UUserWidget> LoseWidgetClass;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UUserWidget> WinWidgetClass;
+	TSubclassOf<class UUserWidget> WinWidgetClass;
 
 	class UUserWidget* CrosshairWidget;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UUserWidget> CrosshairWidgetClass;
+	TSubclassOf<class UUserWidget> CrosshairWidgetClass;
 
+	//clears HUD after game ends.
 	virtual void ClearHUD_Implementation();
 
+	//Returns to main menu level and supporting widgets 
 	UFUNCTION()
 	void OpenMainMenu();
 

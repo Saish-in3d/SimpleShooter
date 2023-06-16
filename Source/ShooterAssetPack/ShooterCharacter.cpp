@@ -22,8 +22,6 @@ AShooterCharacter::AShooterCharacter()
 
 	BallProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>("Projectile Spawn");
 	BallProjectileSpawnPoint->SetupAttachment(RootComponent);
-
-
 }
 
 void AShooterCharacter::PickUp(AGun* OverlappingGuntemp)
@@ -48,9 +46,14 @@ float AShooterCharacter::SetTime()
 	return TimeSinceSpawn;
 }
 
-FString AShooterCharacter::SetName()
+void AShooterCharacter::SetAIShallShoot(bool value)
 {
-	return FString();
+	AIShallShoot = value;
+}
+
+bool AShooterCharacter::GetAIShallShoot()
+{
+	return AIShallShoot;
 }
 
 // Called when the game starts or when spawned
@@ -84,7 +87,7 @@ void AShooterCharacter::BeginPlay()
 		UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("PlayerName"), 0);
 		
 	}
-	Test();
+	//Test();
 	//PlayerName = GetName();
 }
 
@@ -120,20 +123,16 @@ void AShooterCharacter::PauseGame()
 
 void AShooterCharacter::SetCurveAmount()
 {
-	
 	if (CurveAmount == -90.f)
 	{
 		CurveAmount = 90.f;
 		return;
 	}
 	CurveAmount -= 90.f;
-	
 }
 
 void AShooterCharacter::Test()
 {
-	
-	
 	bool DoesSlotExists = UGameplayStatics::DoesSaveGameExist(FString("NameTimeSlot"), 0);
 	if(DoesSlotExists && TimeSaveGameObject)
 	{
@@ -144,8 +143,6 @@ void AShooterCharacter::Test()
 		UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("TimeSaveSlot"), 0);
 		UE_LOG(LogTemp, Warning, TEXT("Testing Test"));
 	}
-	
-	
 }
 
 float AShooterCharacter::GetCurveAmount()
@@ -154,15 +151,11 @@ float AShooterCharacter::GetCurveAmount()
 	return CurveAmount;
 }
 
-
-
 void AShooterCharacter::Shoot()
 {
 	if(OverlappingGun)
 	{
-		
 		OverlappingGun->PullTrigger();
-
 	}
 }
 
@@ -170,30 +163,31 @@ void AShooterCharacter::AIShoot()
 {
 	if (Gun)
 	{
-
 		Gun->PullTrigger();
-
 	}
 }
 
 float AShooterCharacter::GetHealthPercent() const
 {
-	
 	return Health / MaxHealth;
 }
 
-void AShooterCharacter::Ability()
+void AShooterCharacter::ProjectileCurveAbility()
 {
 	FVector ProjectileSpawnPointLocation = BallProjectileSpawnPoint->GetComponentLocation();
 
 	FVector Location = BallProjectileSpawnPoint->GetComponentLocation();
 	FRotator Rotation = BallProjectileSpawnPoint->GetComponentRotation();
 
-	auto Projectile = GetWorld()->SpawnActor<ACurveWall>(BallClass, Location, Rotation);
-	Projectile->SetOwner(this);
+	if(IsStunned == false)
+	{
+		auto Projectile = GetWorld()->SpawnActor<ACurveWall>(BallClass, Location, Rotation);
+		if (Projectile)
+		{
+			Projectile->SetOwner(this);
+		}
+	}
 }
-
-
 
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -338,8 +332,6 @@ void AShooterCharacter::Die()
 	
 }
 
-
-
 void AShooterCharacter::EquipGun()
 {
 	OverlappingGun = Cast<AGun>(OverlappingActor);
@@ -360,7 +352,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CheckGunAmmoLevel();
 	SetTime();
 	//UE_LOG(LogTemp, Warning, TEXT("Hello, World!"));
-	UE_LOG(LogTemp, Warning, TEXT("%s"), &PlayerName);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), &PlayerName);
 }
 
 // Called to bind functionality to input
@@ -374,7 +366,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot); 
-	PlayerInputComponent->BindAction(TEXT("Ability"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Ability);
+	PlayerInputComponent->BindAction(TEXT("Ability"), EInputEvent::IE_Pressed, this, &AShooterCharacter::ProjectileCurveAbility);
 	PlayerInputComponent->BindAction(TEXT("PickGun"), EInputEvent::IE_Pressed, this, &AShooterCharacter::EquipGun);
 	PlayerInputComponent->BindAction(TEXT("Pause"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PauseGame);
 	PlayerInputComponent->BindAction(TEXT("CurveChange"), EInputEvent::IE_Pressed, this, &AShooterCharacter::SetCurveAmount);

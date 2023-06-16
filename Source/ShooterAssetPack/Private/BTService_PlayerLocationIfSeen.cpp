@@ -5,6 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "StunBall.h"
+#include "ShooterAssetPack/ShooterCharacter.h"
 #include "AIController.h"
 
 

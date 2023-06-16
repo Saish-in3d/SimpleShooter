@@ -31,9 +31,11 @@ private:
 
 	float Health;
 
+	//persistent health value check to init death logic
 	void CheckHealth();
 
 	FTimerHandle WallTimer;
 
+	//Used for walls and auto breakables where health decreases wrt time.
 	void ReduceTimeHealth();
 };

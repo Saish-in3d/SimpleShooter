@@ -30,6 +30,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CurveAmount; // Amount of curve applied 
 
+	//Enables ball projectile movement on a curved path
 	void InitCB();
 
 	FQuat StartRotation;
@@ -48,5 +49,6 @@ private:
 
 	class AShooterCharacter* ShooterChar;
 
-
+	UPROPERTY(EditAnywhere)
+	class UClass* StunBallClass;
 };

@@ -14,9 +14,12 @@ class SHOOTERASSETPACK_API AKillEmAllGameModeBase : public ASimpleShooterGameMod
 {
 	GENERATED_BODY()
 public:
+
+	//Whenever a pawn dies in the game this function stores and works on the pawn object
 	virtual void PawnKilled(APawn* PawnKilled) override;
 
 protected:
+	//gets all controllers in the world and checks for AI controllers and decides game winner
 	void EndGame(bool bIsPlayerWinner);
 
 

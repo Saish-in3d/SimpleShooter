@@ -17,9 +17,14 @@ class SHOOTERASSETPACK_API UBTTask_Shoot : public UBTTaskNode
 public:
 	UBTTask_Shoot();
 
+	
+
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
 	
 private:
 	class AShooterCharacter* ShooterCharacter;
+
+	
 };

@@ -8,6 +8,9 @@
 #include "ShooterAssetPack/ShooterCharacter.h"
 #include "ExpandingWall.h"
 #include "Kismet/GameplayStatics.h"
+#include "StunBall.h"
+#include "IronShooterCharacter.h"
+#include "FireCharacter.h"
 #include "GameFramework/MovementComponent.h"
 
 // Sets default values
@@ -31,7 +34,7 @@ void ACurveWall::BeginPlay()
 	{
 
 		CurveAmount = ShooterChar->GetCurveAmount();
-		UE_LOG(LogTemp, Warning, TEXT("MyFloat: %f"), CurveAmount);
+		//UE_LOG(LogTemp, Warning, TEXT("MyFloat: %f"), CurveAmount);
 	}
 	ProjectileMesh->OnComponentHit.AddDynamic(this, &ACurveWall::OnHit);
 
@@ -78,10 +81,22 @@ void ACurveWall::InitCB()
 	{ 
 		FVector Location = GetActorLocation();
 		FRotator Rotation = GetActorRotation();
+		AIronShooterCharacter* IronShooterCharacter = Cast<AIronShooterCharacter>(ShooterChar);
+		AFireCharacter* FireCharacter = Cast<AFireCharacter>(ShooterChar);
 
-		auto ExpWall = GetWorld()->SpawnActor<AExpandingWall>(ExpWallClass, Location, Rotation);
-		ExpWall->SetOwner(this);
-		Destroy();
+		if(ExpWallClass && IronShooterCharacter)
+		{
+			auto ExpWall = GetWorld()->SpawnActor<AExpandingWall>(ExpWallClass, Location, Rotation);
+			ExpWall->SetOwner(this);
+			Destroy();
+		}
+		if (StunBallClass && FireCharacter)
+		{
+			auto StunBall = GetWorld()->SpawnActor<AStunBall>(StunBallClass, Location, Rotation);
+			StunBall->SetOwner(this);
+			//Stun other players
+			Destroy();
+		}
 	}
 
 

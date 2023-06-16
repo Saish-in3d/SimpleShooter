@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SHOOTERASSETPACK_API UBTService_PlayerLocationIfSeen : public UBTService_BlackboardBase
+class SHOOTERASSETPACK_API UBTService_PlayerLocationIfSeen : public UBTService_BlackboardBase 
 {
 	GENERATED_BODY()
 	
@@ -19,4 +19,9 @@ public:
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+private:
+
+	class AShooterCharacter* ShooterChar = nullptr;
+
 };

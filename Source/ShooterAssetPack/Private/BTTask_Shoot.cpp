@@ -9,6 +9,7 @@ UBTTask_Shoot::UBTTask_Shoot()
 	NodeName = "Shoot";
 }
 
+
 EBTNodeResult::Type UBTTask_Shoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
@@ -21,7 +22,7 @@ EBTNodeResult::Type UBTTask_Shoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 
 	ShooterCharacter =  Cast<AShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 
-	if (ShooterCharacter)
+	if (ShooterCharacter && ShooterCharacter->GetAIShallShoot() == true)
 	{
 		ShooterCharacter->AIShoot();
 	}

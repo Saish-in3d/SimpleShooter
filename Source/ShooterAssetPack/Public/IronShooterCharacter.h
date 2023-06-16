@@ -17,7 +17,7 @@ class SHOOTERASSETPACK_API AIronShooterCharacter : public AShooterCharacter
 public:
 	AIronShooterCharacter();
 
-	virtual void Ability() override;
+
 
 
 protected:

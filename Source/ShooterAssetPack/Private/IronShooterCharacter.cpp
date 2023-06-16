@@ -2,18 +2,14 @@
 
 #include "CurveWall.h"
 #include "IronShooterCharacter.h"
+#include "FireCharacter.h"
 
 AIronShooterCharacter::AIronShooterCharacter()
 {
 
 }
 
-void AIronShooterCharacter::Ability()
-{
-	Super::Ability();
 
-	
-}
 
 void AIronShooterCharacter::BeginPlay()
 {
