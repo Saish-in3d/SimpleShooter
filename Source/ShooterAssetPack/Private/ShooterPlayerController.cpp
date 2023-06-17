@@ -4,6 +4,8 @@
 #include "ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
+#include "MyShooterGameInstance.generated.h"
+#include "GameFramework/PlayerStart.h"
 #include "Blueprint/UserWidget.h"
 
 
@@ -60,7 +62,32 @@ void AShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//SetInputMode(FInputModeGameOnly());
 
+	//if(HUDWidgetClass)
+	//{
+	//	HUDWidget = CreateWidget(this, HUDWidgetClass);
+	//	HUDWidget->AddToViewport();
+	//}
+	//UMyShooterGameInstance* GameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+	//TArray<AActor*> FoundActors;
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), FoundActors);
+	//for (AActor* Actor : FoundActors)
+	//{
+	//	APlayerStart* PlayerStart = Cast<APlayerStart>(Actor);
+	//	if (PlayerStart)
+	//	{
+	//		PlayerStart->GetActorTransform();
+	//		if (GameInstance)
+	//		{
+	//			//GetWorld()->SpawnActor<GameInstance->Character1>(ExpWallClass, Location, Rotation); // CONTINUE HERE
+	//		}
+
+	//		// ...
+	//		break; // If you only need one PlayerStart object, you can break the loop once found
+	//	}
+
+	//}
 }
 
 void AShooterPlayerController::ClearHUD_Implementation()

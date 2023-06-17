@@ -7,7 +7,7 @@
 #include "ShooterPlayerController.generated.h"
 
 /**
- * 
+ *  
  */
 UCLASS()
 class SHOOTERASSETPACK_API AShooterPlayerController : public APlayerController
@@ -59,6 +59,11 @@ private:
 	TSubclassOf<class UUserWidget> PauseWidgetClass;
 
 	UUserWidget* PauseWidget;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> HUDWidgetClass;
+
+	UUserWidget* HUDWidget;
 
 
 };
