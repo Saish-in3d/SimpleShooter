@@ -12,7 +12,7 @@
 bool UMainMenuWidget::Initialize()
 {
 	Super::Initialize();
-	UE_LOG(LogTemp, Warning, TEXT("Your message here"));
+	//UE_LOG(LogTemp, Warning, TEXT("Your message here"));
 	StartGameButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnClickStartGameButton);
 	LeaderBoardButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnClickLeaderBoardButton);
 	ExitGame->OnClicked.AddDynamic(this, &UMainMenuWidget::OnClickExitGameButton);
@@ -26,17 +26,16 @@ void UMainMenuWidget::OnClickStartGameButton()
 	
 
 	UGameplayStatics::OpenLevel(GetWorld(), FName("CharSelectLevel"));
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	/*APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController)
 	{
 		PlayerController->SetInputMode(FInputModeGameOnly());
 		if (CharSelectWidgetClass)
 		{
-			CharSelectWidget = CreateWidget(this, CharSelectWidgetClass);
-			CharSelectWidget->AddToViewport();
+			
 			PlayerController->bShowMouseCursor = true;
 		}
-	}
+	}*/
 	
 
 

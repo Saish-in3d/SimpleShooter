@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "ShooterAssetPack/ShooterCharacter.h"
 #include "MyShooterGameInstance.generated.h"
 
 /**
@@ -16,6 +17,13 @@ class SHOOTERASSETPACK_API UMyShooterGameInstance : public UGameInstance
 
 public:
 
-	UPROPERTY(EditAnywhere)
-	ACharacter* Character1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyGameInstance")
+	 AShooterCharacter* Character1 ;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyGameInstance")
+	//AShooterCharacter& Character1Ref = Character1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyGameInstance")
+	TSubclassOf<ACharacter> CharacterClass;
+
 };

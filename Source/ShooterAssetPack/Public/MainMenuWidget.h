@@ -33,10 +33,10 @@ private:
 	UFUNCTION()
 	void OnClickStartGameButton();
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UUserWidget> CharSelectWidgetClass;
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<class UUserWidget> CharSelectWidgetClass;
 
-	UUserWidget* CharSelectWidget;
+	//UUserWidget* CharSelectWidget;
 
 	UFUNCTION()
 	void OnClickLeaderBoardButton();
