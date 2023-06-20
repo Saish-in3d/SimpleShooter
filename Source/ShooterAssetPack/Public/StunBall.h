@@ -27,4 +27,30 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* BallMesh;
 
+	FTimerHandle StunBeginTimerHandle;
+
+	void StunProcess();
+
+	TArray<AActor*> FoundActors;
+
+	class APostProcessVolume* PostProcessVolume;
+
+	class AShooterCharacter* ShooterChar;
+
+	FPostProcessSettings OriginalSettings;
+
+	bool StunOn1= false;
+
+	FPostProcessSettings FlashSettings;
+
+	virtual void StunFunction2_Implementation() ;
+
+	FTimerHandle StunTimerHandle3sec;
+
+	void StunTimeEnds();
+
+	FTimerHandle NoStunTimerHandle3sec;
+
+	void NoStunTimeEnds();
+
 };

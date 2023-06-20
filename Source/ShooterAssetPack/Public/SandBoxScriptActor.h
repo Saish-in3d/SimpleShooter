@@ -26,4 +26,6 @@ private:
 	TArray<AActor*>FoundActors;
 
 	class APlayerStart* PlayerStart;
+
+	class AShooterCharacter* SpawnedCharacter;
 };

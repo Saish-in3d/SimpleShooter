@@ -3,6 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "ShooterAIController.h"
+#include "ShooterInterface.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
 
 void AShooterAIController::Tick(float DeltaTime)
@@ -42,7 +43,20 @@ void AShooterAIController::BeginPlay()
 		RunBehaviorTree(AIBehaviour);
 	}
 
-	
-     GetBlackboardComponent()->SetValueAsVector(FName("StartLocation"), GetPawn()->GetActorLocation());
-	
+
+	GetBlackboardComponent()->SetValueAsVector(FName("StartLocation"), GetPawn()->GetActorLocation());
+
+}
+
+void AShooterAIController::Stun2_Implementation(AShooterAIController* SAIC)
+{
+	SAICTemp = SAIC;
+	SAICTemp->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), true);
+	GetWorld()->GetTimerManager().SetTimer(Stun2TimerHandle, this, &AShooterAIController::AfterDelay, 3.f, false);
+
+}
+
+void AShooterAIController::AfterDelay()
+{
+	SAICTemp->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), false);
 }

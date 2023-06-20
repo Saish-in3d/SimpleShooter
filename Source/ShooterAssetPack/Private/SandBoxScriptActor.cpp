@@ -30,7 +30,7 @@ void ASandBoxScriptActor::BeginPlay()
 			UClass* CharacterClass = MyShooterGameInstance->CharacterClass;
 			if (CharacterClass)
 			{
-				AShooterCharacter* SpawnedCharacter = GetWorld()->SpawnActor<AShooterCharacter>(CharacterClass, PlayerStart->GetActorLocation(), PlayerStart->GetActorRotation(), SpawnParams);
+				SpawnedCharacter = GetWorld()->SpawnActor<AShooterCharacter>(CharacterClass, PlayerStart->GetActorLocation(), PlayerStart->GetActorRotation(), SpawnParams);
 				if (SpawnedCharacter)
 				{
 					ShooterPlayerController->Possess(SpawnedCharacter);
@@ -44,6 +44,10 @@ void ASandBoxScriptActor::Tick(float DeltaTime)
 {
 	if (ShooterPlayerController == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("null"));
+		UE_LOG(LogTemp, Warning, TEXT("controller null"));
+	}
+	if (SpawnedCharacter == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("spawned actor null"));
 	}
 }

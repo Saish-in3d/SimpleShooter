@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ShooterInterface.h"
 #include "ShooterCharacter.generated.h"
 
 
 
 UCLASS()
-class SHOOTERASSETPACK_API AShooterCharacter : public ACharacter
+class SHOOTERASSETPACK_API AShooterCharacter : public ACharacter, public IShooterInterface
 {
 	GENERATED_BODY()
 
