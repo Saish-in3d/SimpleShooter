@@ -80,6 +80,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsStunned = false;
 
+	// bool indicates the stun status of AI controlled characters for AI Blackboard
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool IsCurveBallReleased = false;
+
 	//
 	void SetAIShallShoot(bool value);
 

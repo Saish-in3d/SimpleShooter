@@ -24,7 +24,16 @@ AStunBall::AStunBall()
 void AStunBall::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->GetTimerManager().SetTimer(StunBeginTimerHandle, this, &AStunBall::StunProcess, 0.05f, false);
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if(PlayerPawn)
+	{
+		ShooterChar = Cast<AShooterCharacter>(PlayerPawn);
+		if(ShooterChar)
+		{
+			ShooterChar->IsStunned = true;
+			GetWorld()->GetTimerManager().SetTimer(StunBeginTimerHandle, this, &AStunBall::StunProcess, 0.05f, false);
+		}
+	}
 
 }
 
@@ -39,8 +48,7 @@ void AStunBall::StunProcess()
 			break;
 		}
 	}
-	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	ShooterChar = Cast<AShooterCharacter>(PlayerPawn);
+	
 	if (PostProcessVolume)
 	{
 		OriginalSettings = PostProcessVolume->Settings;
@@ -48,9 +56,9 @@ void AStunBall::StunProcess()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Testing Test"));
 
-			FlashSettings.BloomIntensity = 250.f;
-			PostProcessVolume->Settings = FlashSettings;
-			ShooterChar->IsStunned = true;
+			//FlashSettings.BloomIntensity = 250.f;
+			PostProcessVolume->Settings.BloomIntensity = 250.f; //= FlashSettings;
+			
 			IShooterInterface* ShooterInterface = Cast<IShooterInterface>(ShooterChar);
 			if (ShooterInterface)
 			{
