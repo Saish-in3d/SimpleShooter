@@ -13,5 +13,8 @@ UCLASS()
 class SHOOTERASSETPACK_API AFireCharacter : public AShooterCharacter
 {
 	GENERATED_BODY()
+
+public:
+	virtual void BeginPlay() override;
 	
 };

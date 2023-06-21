@@ -179,8 +179,12 @@ void AShooterCharacter::ProjectileCurveAbility()
 	FVector Location = BallProjectileSpawnPoint->GetComponentLocation();
 	FRotator Rotation = BallProjectileSpawnPoint->GetComponentRotation();
 
-	if(IsStunned == false)
+	if(IsStunned == false && IsCurveBallReleased == false)
 	{
+		if (ActorHasTag(FName("StunChar")))
+		{
+			IsCurveBallReleased = true;
+		}
 		auto Projectile = GetWorld()->SpawnActor<ACurveWall>(BallClass, Location, Rotation);
 		if (Projectile)
 		{

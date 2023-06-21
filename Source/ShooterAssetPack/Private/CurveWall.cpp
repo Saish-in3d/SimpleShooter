@@ -108,6 +108,7 @@ void ACurveWall::InitCB()
 void ACurveWall::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("test"));
+	ShooterChar->IsCurveBallReleased = false;
 	Destroy();
 }
 

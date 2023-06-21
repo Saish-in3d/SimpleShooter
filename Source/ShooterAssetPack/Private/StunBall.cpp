@@ -54,14 +54,15 @@ void AStunBall::StunProcess()
 		OriginalSettings = PostProcessVolume->Settings;
 		if (StunOn1 == true)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Testing Test"));
+			
 
 			//FlashSettings.BloomIntensity = 250.f;
-			PostProcessVolume->Settings.BloomIntensity = 250.f; //= FlashSettings;
+			PostProcessVolume->Settings.BloomIntensity = 2500.f; //= FlashSettings;
 			
 			IShooterInterface* ShooterInterface = Cast<IShooterInterface>(ShooterChar);
 			if (ShooterInterface)
 			{
+				
 				ShooterInterface->Execute_StunFunction2(ShooterChar);
 				GetWorld()->GetTimerManager().SetTimer(StunTimerHandle3sec, this, &AStunBall::StunTimeEnds, 3.f, false);
 
@@ -89,7 +90,7 @@ void AStunBall::StunFunction2_Implementation()
 	FCollisionQueryParams TraceParams(FName(TEXT("MultiSphereTrace")), true);
 	TraceParams.bTraceComplex = true;
 	TraceParams.bReturnPhysicalMaterial = false;
-
+	
 	// Array of objects to trace against
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
@@ -119,9 +120,11 @@ void AStunBall::StunFunction2_Implementation()
 				AShooterAIController* ShooterAIController = Cast<AShooterAIController>(ShooterCharacter->GetController());
 				if (ShooterAIController)
 				{
+					
 					IShooterInterface* ShooterInterface = Cast<IShooterInterface>(HitActor);
 					if (ShooterInterface)
 					{
+						
 						ShooterInterface->Execute_Stun2(ShooterAIController, ShooterAIController);
 					}
 				}
@@ -133,14 +136,17 @@ void AStunBall::StunFunction2_Implementation()
 
 void AStunBall::StunTimeEnds()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Testing Test"));
 	PostProcessVolume->Settings = OriginalSettings;
 	ShooterChar->IsStunned = false;
+	ShooterChar->IsCurveBallReleased = false;
 	Destroy();
 
 }
 
 void AStunBall::NoStunTimeEnds()
 {
+	ShooterChar->IsCurveBallReleased = false;
 	Destroy();
 }
 

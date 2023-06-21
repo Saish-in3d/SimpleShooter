@@ -3,3 +3,9 @@
 
 #include "FireCharacter.h"
 
+void AFireCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	Tags.Add("StunChar");
+
+}
