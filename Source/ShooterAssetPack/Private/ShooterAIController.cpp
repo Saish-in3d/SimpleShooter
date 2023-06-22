@@ -50,6 +50,7 @@ void AShooterAIController::BeginPlay()
 
 void AShooterAIController::Stun2_Implementation(AShooterAIController* SAIC)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("Testing Test"));
 	SAICTemp = SAIC;
 	SAICTemp->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), true);
 	GetWorld()->GetTimerManager().SetTimer(Stun2TimerHandle, this, &AShooterAIController::AfterDelay, 3.f, false);

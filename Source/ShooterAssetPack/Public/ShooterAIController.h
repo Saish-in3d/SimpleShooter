@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "ShooterInterface.h"
 #include "ShooterAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SHOOTERASSETPACK_API AShooterAIController : public AAIController
+class SHOOTERASSETPACK_API AShooterAIController : public AAIController, public IShooterInterface
 {
 	GENERATED_BODY() 
 
@@ -33,7 +34,7 @@ private:
 		class UBehaviorTree* AIBehaviour;
 
 	UFUNCTION()
-	virtual void Stun2_Implementation(class AShooterAIController* SAIC);
+	virtual void Stun2_Implementation(class AShooterAIController* SAIC) override;
 
 	FTimerHandle Stun2TimerHandle;
 

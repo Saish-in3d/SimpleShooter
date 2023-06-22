@@ -43,7 +43,7 @@ private:
 
 	FPostProcessSettings FlashSettings;
 
-	virtual void StunFunction2_Implementation() ;
+	//virtual void StunFunction2_Implementation() ;
 
 	FTimerHandle StunTimerHandle3sec;
 
@@ -52,5 +52,7 @@ private:
 	FTimerHandle NoStunTimerHandle3sec;
 
 	void NoStunTimeEnds();
+
+	void StunFunction2Imple();
 
 };

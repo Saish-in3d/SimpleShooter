@@ -22,8 +22,8 @@ class SHOOTERASSETPACK_API IShooterInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintNativeEvent)
-	void StunFunction2();
+	UFUNCTION()
+		virtual void StunFunction2() {};
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Stun2(class AShooterAIController* SAIC);

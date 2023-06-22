@@ -181,13 +181,14 @@ void AShooterCharacter::ProjectileCurveAbility()
 
 	if(IsStunned == false && IsCurveBallReleased == false)
 	{
-		if (ActorHasTag(FName("StunChar")))
-		{
-			IsCurveBallReleased = true;
-		}
+		
 		auto Projectile = GetWorld()->SpawnActor<ACurveWall>(BallClass, Location, Rotation);
 		if (Projectile)
 		{
+			if (ActorHasTag(FName("StunChar")))
+			{
+				IsCurveBallReleased = true;
+			}
 			Projectile->SetOwner(this);
 		}
 	}

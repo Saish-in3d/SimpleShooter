@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Gun.generated.h"
-
+ 
 UCLASS()
 class SHOOTERASSETPACK_API AGun : public AActor
 {
