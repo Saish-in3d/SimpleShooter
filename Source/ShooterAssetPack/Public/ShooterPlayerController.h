@@ -65,5 +65,15 @@ private:
 
 	UUserWidget* HUDWidget;
 
+	class UTimeSaveGame* TimeSaveGameObject;
 
+	TArray<uint8> ConvertStructArrayToByteArray(const TArray< struct FDataPlayer>& StructArray);
+
+	TArray<uint8> SerializeUObject(class UDataObject* Object);
+
+	class AShooterCharacter* ShooterChar;
+
+	float TimeScore;
+
+	UTimeSaveGame* TimeSaveGameInstance;
 };

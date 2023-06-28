@@ -5,6 +5,11 @@
 #include "CharSelectWidget.h"
 #include "CharacterDisplayPawn.h"
 #include "Components/Button.h"
+#include "SlateCore/Public/Input/Events.h"
+#include "MyShooterGameInstance.h"
+#include "ShooterAssetPack/ShooterCharacter.h"
+#include "Components/EditableTextBox.h"
+
 
 bool UCharSelectWidget::Initialize()
 {
@@ -24,8 +29,26 @@ bool UCharSelectWidget::Initialize()
 	WallCharButton->OnClicked.AddDynamic(this, &UCharSelectWidget::OnClickWallCharButton);
 	WallCharButton->OnHovered.AddDynamic(this, &UCharSelectWidget::OnHoverWallCharButton);
 	StartGameButton->OnClicked.AddDynamic(this, &UCharSelectWidget::OnClickStartGameButton);
+	
+	
+	//NameBox->OnEditableTextBoxCommittedEvent.AddDynamic(ReturnedText, ETextCommit::OnEnter);
+	
+	//NameBox->OnEditableTex
+
 
 	return true;
+	
+	//FDataPlayer gg1;
+	//gg1.DataPlayeName;
+}
+
+void UCharSelectWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	//NameBox->FOnEditableTextBoxCommittedEvent_DelegateWrapper.AddDynamic(ReturnedText, ETextCommit::OnEnter);
+	NameBox->OnTextCommitted.AddDynamic(this, &UCharSelectWidget::HandleTextBoxCommitted);
+
 }
 
 void UCharSelectWidget::OnClickFlashCharButton()
@@ -33,6 +56,7 @@ void UCharSelectWidget::OnClickFlashCharButton()
 	if (CharDisplayPawn == nullptr) { return; }
 	//UE_LOG(LogTemp, Warning, TEXT("Your message here"));
 	CharDisplayPawn->GetSC();
+	
 }
 
 void UCharSelectWidget::OnHoverFlashCharButton()
@@ -62,3 +86,32 @@ void UCharSelectWidget::OnClickStartGameButton()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), FName("SandBox"));
 }
+
+void UCharSelectWidget::HandleTextBoxCommitted(const FText& Text, ETextCommit::Type CommitType)
+{
+	switch (CommitType)
+	{
+	case ETextCommit::Default:
+		// Handle Default commit type
+		break;
+
+	case ETextCommit::OnEnter:
+		UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+		if (MyShooterGameInstance)
+		{
+			//MyShooterGameInstance->DataGetter.DataPlayeName = Text;
+			//MyShooterGameInstance->PlayerDataArray.Add(Text.ToString());
+			MyShooterGameInstance->Player1 = Text.ToString();
+			UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
+		}
+		break;
+	}
+}
+
+
+
+//void UCharSelectWidget::HandleNameTextCommitted(const FText& Text, ETextCommit::Type CommitType)
+//{
+//	
+//
+//}

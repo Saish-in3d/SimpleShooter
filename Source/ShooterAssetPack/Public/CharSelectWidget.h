@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "DataPlayer.h"
 #include "CharSelectWidget.generated.h"
 
-/**
+/** 
  * 
  */
 UCLASS()
@@ -18,6 +19,8 @@ class SHOOTERASSETPACK_API UCharSelectWidget : public UUserWidget
 public:
 	virtual bool Initialize();
 
+	virtual void NativeConstruct() override;
+
 	UPROPERTY(meta = (BindWidget))
 		class UButton* FlashCharButton;
 
@@ -26,6 +29,23 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 		class UButton* StartGameButton;
+
+	UPROPERTY(meta = (BindWidget))
+		class UEditableTextBox* NameBox;
+
+
+	const FText ReturnedText;
+
+	//FDataPlayer GG;
+
+	
+
+	class AShooterCharacter* ShooterChar;
+
+
+	
+
+
 
 private:
 
@@ -51,4 +71,10 @@ private:
 	TArray<AActor*> FoundActors;
 
 	class ACharacterDisplayPawn* CharDisplayPawn;
+
+	UFUNCTION()
+	 void HandleTextBoxCommitted(const FText& Text, ETextCommit::Type CommitType) ;
+	/*const FText& Text, ETextCommit::Type CommitType*/
+
+	
 };

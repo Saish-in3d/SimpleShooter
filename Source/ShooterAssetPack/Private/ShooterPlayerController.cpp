@@ -4,16 +4,27 @@
 #include "ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
-#include "MyShooterGameInstance.generated.h"
+#include "MyShooterGameInstance.h"
 #include "GameFramework/PlayerStart.h"
+#include "TimeSaveGame.h"
+#include "DataPlayer.h"
+#include "Serialization/MemoryWriter.h"
+#include "Serialization/ObjectWriter.h"
+#include "DataObject.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "Blueprint/UserWidget.h"
 
 
 void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
-	
 
+	if (ShooterChar)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("if(ShooterChar)"));
+		TimeScore = ShooterChar->SetTime();
+	}
+	
 	if (bIsWinner == false)
 	{
 		UUserWidget* LoseWidget = CreateWidget(this, LoseWidgetClass);
@@ -33,11 +44,74 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 			//CrosshairWidget->RemoveFromViewport();
 			ClearHUD_Implementation();
 			WinWidget->AddToViewport();
-			AShooterCharacter* ShooterChar = Cast<AShooterCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+			
 			if(ShooterChar)
 			{
-				ShooterChar->Test();
+				//ShooterChar->Test();
 			}
+		}
+		
+		bool DoesSlotExists = UGameplayStatics::DoesSaveGameExist(FString("FinalSaveSlot"), 0);
+		
+		if(DoesSlotExists == false)
+		{
+			if(TimeSaveGameObject == nullptr)
+			{
+				TimeSaveGameObject = Cast<UTimeSaveGame>(UGameplayStatics::CreateSaveGameObject(UTimeSaveGame::StaticClass()));
+			}
+			UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+			if (MyShooterGameInstance && TimeSaveGameObject)
+			{
+				TimeSaveGameObject->SavedPlayerDataArray.Add(MyShooterGameInstance->Player1);
+				TimeSaveGameObject->SavedPlayerDataArray.Add(FString::SanitizeFloat(TimeScore));
+
+				if (UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("FinalSaveSlot"), 0))
+				{
+					// Save successful
+					UE_LOG(LogTemp, Warning, TEXT(" false Save successful"));
+				}
+				else
+				{
+					// Save failed
+					UE_LOG(LogTemp, Warning, TEXT("false Save failed"));
+				}
+			}
+		}
+		if (DoesSlotExists == true)
+		{
+			if(TimeSaveGameInstance == nullptr)
+			{
+				TimeSaveGameInstance = Cast<UTimeSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("FinalSaveSlot"), 0));
+			}
+			UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+			if (MyShooterGameInstance && TimeSaveGameInstance)
+			{
+				for (FString g : TimeSaveGameInstance->SavedPlayerDataArray)
+				{
+					//UE_LOG(LogTemp, Warning, TEXT("Before Save game loop %s"), *g);
+				}
+				TimeSaveGameInstance->SavedPlayerDataArray.Add(MyShooterGameInstance->Player1);
+				TimeSaveGameInstance->SavedPlayerDataArray.Add(FString::SanitizeFloat(TimeScore));
+				
+
+				if (UGameplayStatics::SaveGameToSlot(TimeSaveGameInstance, TEXT("FinalSaveSlot"), 0))
+				{
+					// Save successful
+					UE_LOG(LogTemp, Warning, TEXT(" true Save successful"));
+				}
+				else
+				{
+					// Save failed
+					UE_LOG(LogTemp, Warning, TEXT(" true Save failed"));
+				}
+				for (FDataPlayer SinglePlayerData : MyShooterGameInstance->PlayerDataSet)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Before Save game test"));
+					FText PrintString = SinglePlayerData.DataPlayeName;
+					UE_LOG(LogTemp, Warning, TEXT("Before Save game loop %s"), *PrintString.ToString());
+				}
+			}
+
 		}
 	}
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &AShooterPlayerController::OpenMainMenu, RestartDelay);
@@ -69,6 +143,8 @@ void AShooterPlayerController::BeginPlay()
 		HUDWidget = CreateWidget(this, HUDWidgetClass);
 		HUDWidget->AddToViewport();
 	}
+	ShooterChar = Cast<AShooterCharacter>(GetPawn());
+	
 }
 
 void AShooterPlayerController::ClearHUD_Implementation()
@@ -80,11 +156,6 @@ void AShooterPlayerController::OpenMainMenu()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), "MainMenuLevel");
 }
-
-
-
-
-
 
 
 

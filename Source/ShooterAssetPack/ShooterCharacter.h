@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "ShooterInterface.h"
+#include "DataPlayer.h"
 #include "ShooterCharacter.generated.h"
 
 
@@ -90,6 +91,8 @@ public:
 	// Returns bool value which is used to set the shoot tick function in btt shoot
 	bool GetAIShallShoot();
 
+
+	struct FDataPlayer GetDataPlayer(struct FDataPlayer DP);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -201,4 +204,8 @@ private:
 	void SetCurveAmount();
 
 	bool AIShallShoot = true;
+
+	class UDataSaveGame* DataSaveGameObject;
+
+	
 };

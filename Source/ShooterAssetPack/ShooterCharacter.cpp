@@ -12,6 +12,8 @@
 #include "Blueprint/UserWidget.h"
 #include "TimeSaveGame.h"
 #include "CurveWall.h"
+#include "CharSelectWidget.h"
+#include "DataPlayer.h"
 #include "KillEmAllGameModeBase.h"
 
 // Sets default values
@@ -56,6 +58,12 @@ bool AShooterCharacter::GetAIShallShoot()
 	return AIShallShoot;
 }
 
+FDataPlayer AShooterCharacter::GetDataPlayer(FDataPlayer DP)
+{
+
+	return DP;
+}
+
 // Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
@@ -87,7 +95,15 @@ void AShooterCharacter::BeginPlay()
 		UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("PlayerName"), 0);
 		
 	}
-	//Test();
+
+	/*for (FDataPlayer SinglePlayerData : MyShooterGameInstance->PlayerDataSet)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("test"));
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *SinglePlayerData.DataPlayeName.ToString());
+
+	}*/
+
+	Test();
 	//PlayerName = GetName();
 }
 
@@ -139,6 +155,8 @@ void AShooterCharacter::Test()
 		TimeSaveGameObject->Timegg = SetTime();
 
 		PlayerName = TimeSaveGameObject->PlayerName;
+
+		
 
 		UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("TimeSaveSlot"), 0);
 		UE_LOG(LogTemp, Warning, TEXT("Testing Test"));

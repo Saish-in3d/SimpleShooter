@@ -8,7 +8,7 @@ public class ShooterAssetPack : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","GameplayTasks","UMG" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","GameplayTasks","UMG", "SlateCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
