@@ -9,14 +9,15 @@
 /**
  * 
  */
+
 UCLASS()
 class SHOOTERASSETPACK_API UHUDUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+	
 
-
-
+		 
 
 
 };

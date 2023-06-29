@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DataObject.h"
 #include "LeaderBoardWidget.generated.h"
 
 /**
@@ -16,17 +15,19 @@ class SHOOTERASSETPACK_API ULeaderBoardWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	virtual bool Initialize();
 
 	virtual void NativeConstruct() override;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "UI")
+		class UListView* LeaderboardListView1;
+
 private:
 
-	UDataObject* DeserializeUObject(const TArray<uint8>& SerializedData);
+	class UDataObject* ConstructDataObject();
 
-	TArray<FString> PlayerNameArray;
+	UPROPERTY()
+	class UScoreEntryWidget* ScoreEntryWidget;
 
-	TArray<float> PlayerScoreArray;
 
 	
 };

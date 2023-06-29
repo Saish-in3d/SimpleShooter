@@ -9,13 +9,15 @@
 
 /**
  * 
- */
-UCLASS()
+ */ 
+UCLASS(BlueprintType, Blueprintable)
 class SHOOTERASSETPACK_API UDataObject : public UObject
 {
 	GENERATED_BODY()
 
 public:
+
+	UDataObject();
 
 	FString PlayerName;
 
@@ -23,5 +25,11 @@ public:
 
 	UPROPERTY(Blueprintreadwrite, EditAnywhere)
 	TArray< FDataPlayer> PlayerDataSet1;
+
+	UPROPERTY(Blueprintreadwrite, EditAnywhere)
+		TArray<FString> PlayerNameArray;
+
+	UPROPERTY(Blueprintreadwrite, EditAnywhere)
+		TArray<float> PlayerScoreArray;
 	
 };
