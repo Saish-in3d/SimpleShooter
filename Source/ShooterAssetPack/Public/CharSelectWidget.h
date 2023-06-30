@@ -17,7 +17,7 @@ class SHOOTERASSETPACK_API UCharSelectWidget : public UUserWidget
 	
 
 public:
-	virtual bool Initialize();
+	virtual bool Initialize() override;
 
 	virtual void NativeConstruct() override;
 

@@ -92,6 +92,19 @@ public:
 	bool GetAIShallShoot();
 
 
+	//persistent returning of ammo values in blueprints for HUD
+	UFUNCTION(BlueprintPure)
+		float GetBodyAmmo();
+
+	//persistent returning of ammo values in blueprints for HUD
+	UFUNCTION(BlueprintPure)
+		float GetGunAmmo();
+
+	//persistent returning of curve direction in blueprints for HUD
+	UFUNCTION(BlueprintPure)
+		FText GetDirection();
+
+
 	struct FDataPlayer GetDataPlayer(struct FDataPlayer DP);
 protected:
 	// Called when the game starts or when spawned
@@ -145,18 +158,6 @@ private:
 	void AddMaxAmmo();
 
 	FTimerHandle ReloadDelay;
-
-	//persistent returning of ammo values in blueprints for HUD
-	UFUNCTION(BlueprintPure)
-	float GetBodyAmmo();
-
-	//persistent returning of ammo values in blueprints for HUD
-	UFUNCTION(BlueprintPure)
-	float GetGunAmmo();
-
-	//persistent returning of curve direction in blueprints for HUD
-	UFUNCTION(BlueprintPure)
-	FText GetDirection();
 
 	//Persistent checking of ammo level to regulate reload function
 	void CheckBodyAmmoLevel();
