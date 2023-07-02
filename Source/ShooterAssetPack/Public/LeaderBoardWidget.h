@@ -21,12 +21,21 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "UI")
 		class UListView* LeaderboardListView1;
 
+	UPROPERTY(meta = (BindWidget))
+		class UButton* BackButton;
+
 private:
 
 	class UDataObject* ConstructDataObject();
 
 	UPROPERTY()
 	class UScoreEntryWidget* ScoreEntryWidget;
+
+	UFUNCTION()
+		void OnClickBackButton();
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UMainMenuWidget> MainMenuWidgetClass;
 
 
 	

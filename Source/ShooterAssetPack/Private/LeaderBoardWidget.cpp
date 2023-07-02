@@ -5,6 +5,8 @@
 #include "DataObject.h"
 #include "ScoreEntryWidget.h"
 #include "Components/ListView.h"
+#include "Components/Button.h"
+#include "MainMenuWidget.h"
 #include "LeaderBoardWidget.h"
 
 
@@ -13,6 +15,8 @@
 	void ULeaderBoardWidget::NativeConstruct()
 	{
 		Super::NativeConstruct();
+
+		BackButton->OnClicked.AddDynamic(this, &ULeaderBoardWidget::OnClickBackButton);
 
 		LeaderboardListView1 = Cast<UListView>(GetWidgetFromName(TEXT("LeaderBoardListView")));
 		if (LeaderboardListView1 == nullptr) { return; }
@@ -35,6 +39,18 @@
 		if (DataObjectClass == nullptr) { return nullptr; }
 		UDataObject* DataObject = Cast<UDataObject>(StaticConstructObject_Internal(DataObjectClass));
 		return DataObject;
+	}
+
+	void ULeaderBoardWidget::OnClickBackButton()
+	{
+		if (MainMenuWidgetClass)
+		{
+			UUserWidget* MainMenuWidget= CreateWidget(this, MainMenuWidgetClass );
+			if (MainMenuWidget)
+			{
+				MainMenuWidget->AddToViewport();
+			}
+		}
 	}
 
 	
