@@ -37,6 +37,15 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UMainMenuWidget> MainMenuWidgetClass;
 
+	UFUNCTION()
+		void SetupLeaderBoardEntry();
 
+	UPROPERTY()
+	TArray<float> TimeValueArray;
+
+	UPROPERTY()
+	TArray<int64> IndexArray;
+
+	int64 FindIndex(const TArray<float>& Array, float Value);
 	
 };

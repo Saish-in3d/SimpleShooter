@@ -20,7 +20,8 @@
 
 		LeaderboardListView1 = Cast<UListView>(GetWidgetFromName(TEXT("LeaderBoardListView")));
 		if (LeaderboardListView1 == nullptr) { return; }
-		UDataObject* DataObject = ConstructDataObject();
+
+		/*UDataObject* DataObject = ConstructDataObject();
 		if (DataObject == nullptr) { return; }
 		for (int i = 0; i <= DataObject->PlayerNameArray.Num() - 1; i++)
 		{
@@ -30,7 +31,9 @@
 			LeaderboardListView1->AddItem(ScoreEntryWidget);
 			
 			
-		}
+		}*/
+
+		SetupLeaderBoardEntry();
 	}
 
 	UDataObject* ULeaderBoardWidget::ConstructDataObject()
@@ -53,6 +56,42 @@
 		}
 	}
 
-	
+	void ULeaderBoardWidget::SetupLeaderBoardEntry()
+	{
+		UDataObject* DataObject = ConstructDataObject();
+		if (DataObject == nullptr) { return; }
+		DataObject->PlayerScoreArray;
+		for (float Score : DataObject->PlayerScoreArray)
+		{
+			TimeValueArray.Add(Score);
+		}
+		TimeValueArray.Sort([](const float& a, const float& b) { return a < b; });
+		for (float Score : TimeValueArray)
+		{
+			IndexArray.Add(FindIndex(DataObject->PlayerScoreArray, Score));
+		}
+		for (int64 i : IndexArray)
+		{
+			ScoreEntryWidget = Cast<UScoreEntryWidget>(StaticConstructObject_Internal(UScoreEntryWidget::StaticClass()));
+			if (ScoreEntryWidget == nullptr) { return; }
+			ScoreEntryWidget->PrepData1(i);
+			LeaderboardListView1->AddItem(ScoreEntryWidget);
 
+
+		}
+
+	}
+
+	int64 ULeaderBoardWidget::FindIndex(const TArray<float>& Array, float Value)
+	{
+		int32 Index;
+		if (Array.Find(Value, Index))
+		{
+			return Index;
+		}
+		return -1; // Value not found in the array
+	}
+
+	
+	
 
