@@ -38,9 +38,14 @@ public:
 
 	//FDataPlayer GG;
 
-	
+	UPROPERTY(EditAnywhere)
+		class UTextBlock* PromptTB;
 
 	class AShooterCharacter* ShooterChar;
+
+	bool NameEntered = false;
+
+	bool CharSelected = false;
 
 
 	

@@ -8,13 +8,19 @@
 #include "SlateCore/Public/Input/Events.h"
 #include "MyShooterGameInstance.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
+#include "Components/TextBlock.h"
 #include "Components/EditableTextBox.h"
 
 
 bool UCharSelectWidget::Initialize()
 {
 	Super::Initialize();
+
+	NameEntered = false;
+	CharSelected = false;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), FoundActors);
+
+	PromptTB = Cast<UTextBlock>(GetWidgetFromName(TEXT("Prompt")));
 
 	for (AActor* FoundActor : FoundActors)
 	{
@@ -84,28 +90,64 @@ void UCharSelectWidget::OnHoverWallCharButton()
 
 void UCharSelectWidget::OnClickStartGameButton()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), FName("SandBox"));
+	if(NameEntered == true && CharSelected == true)
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), FName("SandBox"));
+	}
+	else if (NameEntered == false)
+	{
+		if (PromptTB)
+		{
+			PromptTB->SetText(FText::FromString("Enter your name"));
+		}
+	}
 }
 
 void UCharSelectWidget::HandleTextBoxCommitted(const FText& Text, ETextCommit::Type CommitType)
 {
-	switch (CommitType)
+	if (NameEntered == true)
 	{
-	case ETextCommit::Default:
-		// Handle Default commit type
-		break;
-
-	case ETextCommit::OnEnter:
-		UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
-		if (MyShooterGameInstance)
+		if (PromptTB)
 		{
-			//MyShooterGameInstance->DataGetter.DataPlayeName = Text;
-			//MyShooterGameInstance->PlayerDataArray.Add(Text.ToString());
-			MyShooterGameInstance->Player1 = Text.ToString();
-			UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
+			PromptTB->SetText(FText::FromString("Name already entered"));
 		}
-		break;
 	}
+	
+	if (NameEntered == false)
+	{
+		NameEntered = true;
+		switch (CommitType)
+		{
+		case ETextCommit::Default:
+			// Handle Default commit type
+			break;
+
+		case ETextCommit::OnEnter:
+			UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+			if (MyShooterGameInstance)
+			{
+				//MyShooterGameInstance->DataGetter.DataPlayeName = Text;
+				//MyShooterGameInstance->PlayerDataArray.Add(Text.ToString());
+				MyShooterGameInstance->Player1 = Text.ToString();
+				UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
+				
+			}
+			break;
+
+		//case ETextCommit::OnUserMovedFocus:
+		//	UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+		//	if (MyShooterGameInstance)
+		//	{
+		//		//MyShooterGameInstance->DataGetter.DataPlayeName = Text;
+		//		//MyShooterGameInstance->PlayerDataArray.Add(Text.ToString());
+		//		MyShooterGameInstance->Player1 = Text.ToString();
+		//		UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
+		//		NameEntered = true;
+		//	}
+		//	break;
+		}
+	}
+	
 }
 
 
