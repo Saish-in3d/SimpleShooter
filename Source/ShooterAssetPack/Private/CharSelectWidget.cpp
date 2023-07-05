@@ -62,6 +62,11 @@ void UCharSelectWidget::OnClickFlashCharButton()
 	if (CharDisplayPawn == nullptr) { return; }
 	//UE_LOG(LogTemp, Warning, TEXT("Your message here"));
 	CharDisplayPawn->GetSC();
+	CharSelectStatus = ECharSelectStatus::CSS_CharSelected;
+	if (PromptTB)
+	{
+		PromptTB->SetText(FText::FromString("Flash Character Chosen"));
+	}
 	
 }
 
@@ -78,6 +83,11 @@ void UCharSelectWidget::OnClickWallCharButton()
 {
 	if (CharDisplayPawn == nullptr) { return; }
 	CharDisplayPawn->GetWC();
+	CharSelectStatus = ECharSelectStatus::CSS_CharSelected;
+	if (PromptTB)
+	{
+		PromptTB->SetText(FText::FromString("Wall Character Chosen"));
+	}
 }
 
 void UCharSelectWidget::OnHoverWallCharButton()
@@ -90,70 +100,75 @@ void UCharSelectWidget::OnHoverWallCharButton()
 
 void UCharSelectWidget::OnClickStartGameButton()
 {
-	if(NameEntered == true && CharSelected == true)
+	if(CharSelectStatus >= ECharSelectStatus::CSS_NameEntered)
 	{
 		UGameplayStatics::OpenLevel(GetWorld(), FName("SandBox"));
 	}
-	else if (NameEntered == false)
+	if (CharSelectStatus >= ECharSelectStatus::CSS_CharSelected)
 	{
 		if (PromptTB)
 		{
-			PromptTB->SetText(FText::FromString("Enter your name"));
+			PromptTB->SetText(FText::FromString("Enter Your Name"));
+		}
+	}
+	else 
+	{
+		if (PromptTB)
+		{
+			PromptTB->SetText(FText::FromString("Enter all details"));
 		}
 	}
 }
 
 void UCharSelectWidget::HandleTextBoxCommitted(const FText& Text, ETextCommit::Type CommitType)
 {
-	if (NameEntered == true)
-	{
-		if (PromptTB)
-		{
-			PromptTB->SetText(FText::FromString("Name already entered"));
-		}
-	}
 	
-	if (NameEntered == false)
+	
+	if (CharSelectStatus >= ECharSelectStatus::CSS_CharSelected)
 	{
-		NameEntered = true;
+		
 		switch (CommitType)
 		{
 		case ETextCommit::Default:
-			// Handle Default commit type
+			
+		 //Handle Default commit type
+
 			break;
 
 		case ETextCommit::OnEnter:
-			UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
-			if (MyShooterGameInstance)
+			//UE_LOG(LogTemp, Warning, TEXT("TEST"));
+			if (CharSelectStatus == ECharSelectStatus::CSS_NameEntered)
 			{
-				//MyShooterGameInstance->DataGetter.DataPlayeName = Text;
-				//MyShooterGameInstance->PlayerDataArray.Add(Text.ToString());
+				
+				if (PromptTB)
+				{
+					PromptTB->SetText(FText::FromString("Name already entered, reselect character type to rename"));
+				}
+			}
+			MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+			if (MyShooterGameInstance && CharSelectStatus < ECharSelectStatus::CSS_NameEntered)
+			{
+				CharSelectStatus = ECharSelectStatus::CSS_NameEntered;
+
 				MyShooterGameInstance->Player1 = Text.ToString();
 				UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
-				
+				if (PromptTB)
+				{
+					PromptTB->SetText(FText::FromString("Name Entered"));
+				}
 			}
 			break;
 
-		//case ETextCommit::OnUserMovedFocus:
-		//	UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
-		//	if (MyShooterGameInstance)
-		//	{
-		//		//MyShooterGameInstance->DataGetter.DataPlayeName = Text;
-		//		//MyShooterGameInstance->PlayerDataArray.Add(Text.ToString());
-		//		MyShooterGameInstance->Player1 = Text.ToString();
-		//		UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
-		//		NameEntered = true;
-		//	}
-		//	break;
+		case ETextCommit::OnCleared:
+		//Handle Default commit type
+			
+		break;
+
+		case ETextCommit::OnUserMovedFocus:
+			//Handle Default commit type
+			
+		break;
 		}
 	}
 	
 }
-
-
-
-//void UCharSelectWidget::HandleNameTextCommitted(const FText& Text, ETextCommit::Type CommitType)
-//{
-//	
-//
-//}

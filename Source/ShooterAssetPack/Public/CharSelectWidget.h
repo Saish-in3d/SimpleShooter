@@ -10,6 +10,17 @@
 /** 
  * 
  */
+
+UENUM()
+enum class ECharSelectStatus : uint8
+{
+	CSS_None UMETA(DisplayName = "None"),
+	CSS_CharSelected UMETA(DisplayName = "CharSelected"),
+	CSS_NameEntered UMETA(DisplayName = "NameEntered"),
+};
+
+
+
 UCLASS()
 class SHOOTERASSETPACK_API UCharSelectWidget : public UUserWidget
 {
@@ -47,6 +58,8 @@ public:
 
 	bool CharSelected = false;
 
+	
+
 
 	
 
@@ -73,6 +86,7 @@ private:
 
 	//TArray<ACharacter*> CharacterDisplayClass;
 
+
 	TArray<AActor*> FoundActors;
 
 	class ACharacterDisplayPawn* CharDisplayPawn;
@@ -81,5 +95,7 @@ private:
 	 void HandleTextBoxCommitted(const FText& Text, ETextCommit::Type CommitType) ;
 	/*const FText& Text, ETextCommit::Type CommitType*/
 
-	
+	class UMyShooterGameInstance* MyShooterGameInstance;
+
+	ECharSelectStatus CharSelectStatus = ECharSelectStatus::CSS_None;
 };
