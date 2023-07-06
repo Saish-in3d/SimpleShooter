@@ -23,7 +23,9 @@ ACharacterDisplayPawn::ACharacterDisplayPawn()
 	{
 		RootComponent = SphereComponent;
 		WallCharMesh->SetupAttachment(SphereComponent);
+		//WallCharMesh->SetHiddenInGame(true);
 		FlashCharMesh->SetupAttachment(SphereComponent);
+		//FlashCharMesh->SetHiddenInGame(true);
 		
 		//FCAnimInstance
 	}

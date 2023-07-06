@@ -58,6 +58,9 @@ public:
 
 	bool CharSelected = false;
 
+	UPROPERTY(meta = (BindWidget))
+		class UButton* BackButton;
+
 	
 
 
@@ -82,9 +85,11 @@ private:
 	UFUNCTION()
 		void OnClickStartGameButton();
 
-	//TSubclassOf<ACharacter*> CharacterDisplayClass;
+	UFUNCTION()
+		void OnClickBackButton();
 
-	//TArray<ACharacter*> CharacterDisplayClass;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UMainMenuWidget> MainMenuWidgetClass;
 
 
 	TArray<AActor*> FoundActors;

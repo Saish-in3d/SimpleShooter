@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "SlateCore/Public/Input/Events.h"
 #include "MyShooterGameInstance.h"
+#include "MainMenuWidget.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
 #include "Components/TextBlock.h"
 #include "Components/EditableTextBox.h"
@@ -27,6 +28,8 @@ bool UCharSelectWidget::Initialize()
 		CharDisplayPawn = Cast<ACharacterDisplayPawn>(FoundActor);
 		if (CharDisplayPawn)
 		{
+			CharDisplayPawn->WCHide();
+			CharDisplayPawn->FCHide();
 			break;
 		}
 	}
@@ -36,16 +39,13 @@ bool UCharSelectWidget::Initialize()
 	WallCharButton->OnHovered.AddDynamic(this, &UCharSelectWidget::OnHoverWallCharButton);
 	StartGameButton->OnClicked.AddDynamic(this, &UCharSelectWidget::OnClickStartGameButton);
 	
-	
-	//NameBox->OnEditableTextBoxCommittedEvent.AddDynamic(ReturnedText, ETextCommit::OnEnter);
-	
-	//NameBox->OnEditableTex
-
+	if (PromptTB)
+	{
+		PromptTB->SetText(FText::FromString("Select Character"));
+	}
 
 	return true;
-	
-	//FDataPlayer gg1;
-	//gg1.DataPlayeName;
+
 }
 
 void UCharSelectWidget::NativeConstruct()
@@ -54,6 +54,7 @@ void UCharSelectWidget::NativeConstruct()
 
 	//NameBox->FOnEditableTextBoxCommittedEvent_DelegateWrapper.AddDynamic(ReturnedText, ETextCommit::OnEnter);
 	NameBox->OnTextCommitted.AddDynamic(this, &UCharSelectWidget::HandleTextBoxCommitted);
+	BackButton->OnClicked.AddDynamic(this, &UCharSelectWidget::OnClickBackButton);
 
 }
 
@@ -118,6 +119,12 @@ void UCharSelectWidget::OnClickStartGameButton()
 			PromptTB->SetText(FText::FromString("Enter all details"));
 		}
 	}
+}
+
+void UCharSelectWidget::OnClickBackButton()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), "MainMenuLevel");
+
 }
 
 void UCharSelectWidget::HandleTextBoxCommitted(const FText& Text, ETextCommit::Type CommitType)
