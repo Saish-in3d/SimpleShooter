@@ -62,7 +62,7 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 			UMyShooterGameInstance* MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
 			if (MyShooterGameInstance && TimeSaveGameObject)
 			{
-				TimeSaveGameObject->SavedPlayerDataArray.Add(MyShooterGameInstance->Player1);
+				TimeSaveGameObject->SavedPlayerDataArray.Add(MyShooterGameInstance->PlayerNameValue);
 				TimeSaveGameObject->SavedPlayerDataArray.Add(FString::SanitizeFloat(TimeScore));
 
 				if (UGameplayStatics::SaveGameToSlot(TimeSaveGameObject, TEXT("FinalSaveSlot"), 0))
@@ -90,7 +90,7 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 				{
 					//UE_LOG(LogTemp, Warning, TEXT("Before Save game loop %s"), *g);
 				}
-				TimeSaveGameInstance->SavedPlayerDataArray.Add(MyShooterGameInstance->Player1);
+				TimeSaveGameInstance->SavedPlayerDataArray.Add(MyShooterGameInstance->PlayerNameValue);
 				TimeSaveGameInstance->SavedPlayerDataArray.Add(FString::SanitizeFloat(TimeScore));
 				
 

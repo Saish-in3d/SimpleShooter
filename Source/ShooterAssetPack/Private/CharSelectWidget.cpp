@@ -157,8 +157,8 @@ void UCharSelectWidget::HandleTextBoxCommitted(const FText& Text, ETextCommit::T
 			{
 				CharSelectStatus = ECharSelectStatus::CSS_NameEntered;
 
-				MyShooterGameInstance->Player1 = Text.ToString();
-				UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->Player1);
+				MyShooterGameInstance->PlayerNameValue = Text.ToString();
+				UE_LOG(LogTemp, Warning, TEXT("At text Entered %s"), *MyShooterGameInstance->PlayerNameValue);
 				if (PromptTB)
 				{
 					PromptTB->SetText(FText::FromString("Name Entered"));

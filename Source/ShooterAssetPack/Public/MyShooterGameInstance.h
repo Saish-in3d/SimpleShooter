@@ -56,6 +56,6 @@ public:
 
 	TArray<FString> PlayerDataArray;
 	
-	FString Player1;
+	FString PlayerNameValue;
 
 };

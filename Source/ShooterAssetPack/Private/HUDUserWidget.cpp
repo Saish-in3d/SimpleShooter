@@ -4,6 +4,7 @@
 #include "ShooterAssetPack/ShooterCharacter.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
+#include "MyShooterGameInstance.h"
 #include "HUDUserWidget.h"
 
 bool UHUDUserWidget::Initialize()
@@ -16,8 +17,14 @@ bool UHUDUserWidget::Initialize()
 	GunAmmoTB = Cast<UTextBlock>(GetWidgetFromName(TEXT("GunAmmo")));
 	DirectionTB = Cast<UTextBlock>(GetWidgetFromName(TEXT("Direction")));
 	TimevalueTB = Cast<UTextBlock>(GetWidgetFromName(TEXT("Timevalue")));
+	NamevalueTB = Cast<UTextBlock>(GetWidgetFromName(TEXT("NameValue")));
 	HealthProgressBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("HealthProgressBar1")));
-	
+	UMyShooterGameInstance * MyShooterGameInstance = Cast<UMyShooterGameInstance>(GetGameInstance());
+	if (NamevalueTB && MyShooterGameInstance)
+	{
+		NamevalueTB->SetText(FText::FromString(MyShooterGameInstance->PlayerNameValue));
+	}
+
 	return true;
 }
 

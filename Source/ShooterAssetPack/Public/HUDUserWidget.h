@@ -43,6 +43,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UTextBlock* TimevalueTB;
 
+	UPROPERTY(EditAnywhere)
+	class UTextBlock* NamevalueTB;
+	
 	void SetTimevalueTB();
 
 	UPROPERTY(EditAnywhere)
