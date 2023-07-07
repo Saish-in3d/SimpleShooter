@@ -3,6 +3,7 @@
 
 #include "HealthComponent.h"
 
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -22,11 +23,13 @@ void UHealthComponent::BeginPlay()
 	Health = MaxHealth;
 	
 	GetWorld()->GetTimerManager().SetTimer(WallTimer, this, &UHealthComponent::ReduceTimeHealth, 2.f, true);
+
+	GetOwner();
 }
 
 void UHealthComponent::CheckHealth()
 {
-
+	//GetOwner()->ChangeColor
 	if (Health <= 0.f)
 	{
 		GetOwner()->Destroy();
@@ -51,5 +54,10 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UHealthComponent::ReduceHealth(float Damage)
 {
 	Health -= Damage;
+}
+
+float UHealthComponent::GetAlpha()
+{
+	return 1.f - (Health / MaxHealth);
 }
 

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ExpandingWall.generated.h"
+#include "ExpandingWall.generated.h" 
 
 UCLASS()
 class SHOOTERASSETPACK_API AExpandingWall : public AActor
@@ -16,6 +16,8 @@ public:
 	AExpandingWall();
 
 	virtual void Tick(float DeltaTime) override;
+
+	void ChangeColor(float Alpha);
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,4 +33,7 @@ private:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	class UMaterialInterface* WallMaterial;
+
+	class UMaterialInstanceDynamic* DynamicWallMaterial;
 };

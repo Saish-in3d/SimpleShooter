@@ -4,6 +4,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
 #include "HealthComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/MaterialInterface.h"
 #include "ExpandingWall.h"
 
 // Sets default values
@@ -24,11 +26,26 @@ void AExpandingWall::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (WallComponent)
+	{
+		
+		
+		WallMaterial = WallComponent->GetMaterial(0);
+		if (WallMaterial == nullptr) { return; }
+		DynamicWallMaterial = UMaterialInstanceDynamic::Create(WallMaterial, NULL);
+		if (DynamicWallMaterial)
+		{
+			WallComponent->SetMaterial(0, DynamicWallMaterial);
+		}
+	}
+
 }
 
 float AExpandingWall::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (HealthComponent == nullptr) { return 0.0f; }
 	HealthComponent->ReduceHealth(DamageAmount);
+	
 	return 0.0f;
 }
 
@@ -37,5 +54,18 @@ void AExpandingWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (HealthComponent == nullptr) { return ; }
+	
+	ChangeColor(HealthComponent->GetAlpha());
+	//ChangeColor(0.5f);
+}
+
+void AExpandingWall::ChangeColor(float Alpha)
+{
+	if (DynamicWallMaterial)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Your message here"));
+		DynamicWallMaterial->SetScalarParameterValue(TEXT("Blend"), Alpha);
+	}
 }
 
