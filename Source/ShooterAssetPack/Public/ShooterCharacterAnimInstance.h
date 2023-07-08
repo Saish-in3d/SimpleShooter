@@ -23,4 +23,28 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		APawn* GetOwnerPawn1();
+
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	virtual void NativeInitializeAnimation() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float NativeSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float NativeAngle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool NativeIsDead;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float NativePitch;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool NativeIsInAir;
+
+private:
+	APawn* NativeOwnerPawn;
+
+	class AShooterCharacter* ShooterCharacter;
 };
