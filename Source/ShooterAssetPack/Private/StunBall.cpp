@@ -189,7 +189,7 @@ void AStunBall::StunFunction2Imple()
 		{
 			AActor* HitActor = Hit.GetActor();
 			if (HitActor == false) { return; }
-			DrawDebugSphere(GetWorld(), HitActor->GetActorLocation(), 25.f, 16, FColor::Blue, false, 3.f);
+			//DrawDebugSphere(GetWorld(), HitActor->GetActorLocation(), 25.f, 16, FColor::Blue, false, 3.f);
 			StunnedActors.AddUnique(HitActor);
 			
 		}

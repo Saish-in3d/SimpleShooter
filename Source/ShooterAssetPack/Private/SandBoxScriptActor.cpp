@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+#include "SandBoxScriptActor.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterPlayerController.h"
 #include "MyShooterGameInstance.h"
 #include "GameFramework/PlayerStart.h"
 
-#include "SandBoxScriptActor.h"
 
 void ASandBoxScriptActor::BeginPlay()
 {

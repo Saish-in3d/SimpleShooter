@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "CharDisplayActor.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterCharacterAnimInstance.h"
 #include "CharacterDisplayPawn.h"
-#include "CharDisplayActor.h"
+
 
 // Sets default values
 ACharDisplayActor::ACharDisplayActor()

@@ -1,17 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "KillEmAllGameModeBase.h"
+
 #include "ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
 #include "MyShooterGameInstance.h"
 #include "GameFramework/PlayerStart.h"
 #include "TimeSaveGame.h"
-#include "DataPlayer.h"
-#include "Serialization/MemoryWriter.h"
-#include "Serialization/ObjectWriter.h"
 #include "DataObject.h"
-#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+#include "KillEmAllGameModeBase.h"
 #include "Blueprint/UserWidget.h"
 
 
@@ -103,12 +100,6 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 				{
 					// Save failed
 					UE_LOG(LogTemp, Warning, TEXT(" true Save failed"));
-				}
-				for (FDataPlayer SinglePlayerData : MyShooterGameInstance->PlayerDataSet)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Before Save game test"));
-					FText PrintString = SinglePlayerData.DataPlayeName;
-					UE_LOG(LogTemp, Warning, TEXT("Before Save game loop %s"), *PrintString.ToString());
 				}
 			}
 

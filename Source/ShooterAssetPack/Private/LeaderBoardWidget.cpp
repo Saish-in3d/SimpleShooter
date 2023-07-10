@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "LeaderBoardWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 #include "DataObject.h"
@@ -7,7 +8,7 @@
 #include "Components/ListView.h"
 #include "Components/Button.h"
 #include "MainMenuWidget.h"
-#include "LeaderBoardWidget.h"
+
 
 
 
@@ -40,7 +41,9 @@
 	{
 		UClass* DataObjectClass = UDataObject::StaticClass();
 		if (DataObjectClass == nullptr) { return nullptr; }
-		UDataObject* DataObject = Cast<UDataObject>(StaticConstructObject_Internal(DataObjectClass));
+		//UDataObject* DataObject = Cast<UDataObject>(StaticConstructObject_Internal(DataObjectClass));
+		UDataObject* DataObject = NewObject<UDataObject>(GetTransientPackage(), DataObjectClass);
+
 		return DataObject;
 	}
 
@@ -72,7 +75,9 @@
 		}
 		for (int64 i : IndexArray)
 		{
-			ScoreEntryWidget = Cast<UScoreEntryWidget>(StaticConstructObject_Internal(UScoreEntryWidget::StaticClass()));
+			//ScoreEntryWidget = Cast<UScoreEntryWidget>(StaticConstructObject_Internal(UScoreEntryWidget::StaticClass()));
+			ScoreEntryWidget = NewObject<UScoreEntryWidget>(GetTransientPackage(), UScoreEntryWidget::StaticClass());
+
 			if (ScoreEntryWidget == nullptr) { return; }
 			ScoreEntryWidget->PrepData1(i);
 			LeaderboardListView1->AddItem(ScoreEntryWidget);

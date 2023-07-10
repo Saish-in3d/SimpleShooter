@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "CharacterDisplayPawn.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,7 +9,7 @@
 #include "FireCharacter.h"
 #include "IronShooterCharacter.h"
 #include "MyShooterGameInstance.h"
-#include "CharacterDisplayPawn.h"
+
 
 // Sets default values
 ACharacterDisplayPawn::ACharacterDisplayPawn()

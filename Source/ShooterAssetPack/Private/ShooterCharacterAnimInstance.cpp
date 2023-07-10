@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ShooterCharacterAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-#include "ShooterCharacterAnimInstance.h"
 
 APawn* UShooterCharacterAnimInstance::GetOwnerPawn1()
 {

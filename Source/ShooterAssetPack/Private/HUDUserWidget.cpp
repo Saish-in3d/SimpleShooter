@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "HUDUserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterAssetPack/ShooterCharacter.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
 #include "MyShooterGameInstance.h"
-#include "HUDUserWidget.h"
+
 
 bool UHUDUserWidget::Initialize()
 {

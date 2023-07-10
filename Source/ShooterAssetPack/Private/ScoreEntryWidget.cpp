@@ -22,7 +22,8 @@ void UScoreEntryWidget::PrepData1(int64 Index)
 {
 	UClass* DataObjectClass = UDataObject::StaticClass();
 	if (DataObjectClass == nullptr) { return; }
-	UDataObject* DataObject = Cast<UDataObject>(StaticConstructObject_Internal(DataObjectClass));
+	//UDataObject* DataObject = Cast<UDataObject>(StaticConstructObject_Internal(DataObjectClass));
+	UDataObject* DataObject = NewObject<UDataObject>(GetTransientPackage(), DataObjectClass);
 	if (DataObject)
 	{
 		NameArray = DataObject->PlayerNameArray;

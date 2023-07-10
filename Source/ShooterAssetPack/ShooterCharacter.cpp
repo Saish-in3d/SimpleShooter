@@ -399,9 +399,7 @@ bool AShooterCharacter::IsDead() const
 {
 	if (Health <= 5.f)
 	{
-		
 		return true;
 	}
 	else return false;
 }
-
